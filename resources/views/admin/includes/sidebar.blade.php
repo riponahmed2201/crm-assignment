@@ -16,10 +16,10 @@
             </a>
         </li>
 
-        <li class="nav-heading">Pages</li>
+        <li class="nav-heading">Profile</li>
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="users-profile.html">
+            <a class="nav-link {{ Request::is('profile') ? '' : 'collapsed' }}" href="{{ route('profile') }}">
                 <i class="bi bi-person"></i>
                 <span>Profile</span>
             </a>
