@@ -53,30 +53,34 @@
                                         <p class="text-center small">Enter your email & password to login</p>
                                     </div>
 
-                                    <form class="row g-3 needs-validation" novalidate method="POST">
+                                    <form class="row g-3 needs-validation" novalidate method="POST"
+                                        action="{{ route('login') }}">
 
                                         @csrf
+
                                         <div class="col-12">
                                             <label for="email" class="form-label">Email</label>
-                                            <div class="input-group has-validation">
-                                                <span class="input-group-text" id="inputGroupPrepend">@</span>
-                                                <input type="email" name="email" class="form-control" id="email"
-                                                    required>
-                                                <div class="invalid-feedback">Please enter your email.</div>
-                                            </div>
+                                            <input type="email" name="email"
+                                                class="form-control @error('email') is-invalid @enderror" required>
+                                            @error('email')
+                                                <span class="text-danger mt-2">{{ $message }}</span>
+                                            @enderror
                                         </div>
 
                                         <div class="col-12">
                                             <label for="password" class="form-label">Password</label>
-                                            <input type="password" name="password" class="form-control" id="password"
-                                                required>
-                                            <div class="invalid-feedback">Please enter your password!</div>
+                                            <input type="password" name="password"
+                                                class="form-control @error('password') is-invalid @enderror" required>
+                                            @error('password')
+                                                <span class="text-danger mt-2">{{ $message }}</span>
+                                            @enderror
                                         </div>
 
                                         <div class="col-12">
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" name="remember"
-                                                    value="true" id="rememberMe">
+                                                    value="1" id="rememberMe"
+                                                    {{ old('remember') ? 'checked' : '' }}>
                                                 <label class="form-check-label" for="rememberMe">Remember me</label>
                                             </div>
                                         </div>

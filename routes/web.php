@@ -1,11 +1,21 @@
 <?php
 
+use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('login');
-});
+//Login
+Route::get('/', [AuthController::class, 'showLoginForm']);
+Route::post('login', [AuthController::class, 'login'])->name('login');
 
-Route::get('/dashbaord', function () {
-    return view('master');
+//Admin Route Here
+Route::group(['middleware' => 'admin'], function () {
+    Route::get('dashboard', DashboardController::class)->name('dashboard');
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+    //Users
+    Route::resources([
+        'users' => UserController::class,
+    ]);
 });
