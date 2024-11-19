@@ -19,6 +19,7 @@
                                     <th>#</th>
                                     <th>Name</th>
                                     <th>Email</th>
+                                    <th>Phone</th>
                                     <th>Role</th>
                                     <th>Created At</th>
                                     <th>Action</th>
@@ -30,6 +31,7 @@
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $user->name }}</td>
                                         <td>{{ $user->email }}</td>
+                                        <td>{{ $user->phone }}</td>
                                         <td> <span class="badge rounded-pill bg-primary">{{ ucwords($user->role) }}</span>
                                         </td>
                                         <td>{{ $user->created_at }}</td>

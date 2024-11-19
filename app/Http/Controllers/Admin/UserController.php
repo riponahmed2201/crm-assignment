@@ -36,6 +36,7 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
+            'phone' => 'required|string|max:255|unique:users',
             'role' => 'required|string|in:admin,user',
             'password' => 'required|string|min:6'
         ]);
@@ -79,6 +80,7 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'phone' => 'required|string|max:20|unique:users,phone,' . $user->id,
             'role' => 'required|string|in:admin,user',
             'password' => 'required|string|min:6'
         ]);
@@ -103,11 +105,19 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        if ($user->deletable) {
-            $user->delete();
-            notify()->success('User deleted successfull.', 'Success');
-        } else {
-            notify()->error("You can\'t delete system user", "Error");
+        dd($user);
+
+        try {
+            if ($user->deletable) {
+                $user->delete();
+                notify()->success('User deleted successfull.', 'Success');
+                return back();
+            } else {
+                notify()->error("You can\'t delete system user", "Error");
+                return back();
+            }
+        } catch (Exception $exception) {
+            dd($exception);
         }
     }
 }
