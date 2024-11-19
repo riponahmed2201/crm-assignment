@@ -20,6 +20,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'name' => 'Admin',
+                'phone' => '01746-000000',
                 'role' => 'admin',
                 'password' => Hash::make('password'),
                 'deletable' => false
