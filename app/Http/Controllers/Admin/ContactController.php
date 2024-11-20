@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\AcademicRole;
 use App\Models\Contact;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ContactController extends Controller
@@ -13,7 +15,11 @@ class ContactController extends Controller
      */
     public function index()
     {
-        //
+        $contacts = Contact::with('user', 'academicRole')->latest()->get();
+
+        dd($contacts);
+
+        return view('admin.contacts.index', compact('contacts'));
     }
 
     /**
@@ -21,7 +27,10 @@ class ContactController extends Controller
      */
     public function create()
     {
-        //
+        $users = User::latest()->get();
+        $academicRoles = AcademicRole::latest()->get();
+
+        return view('admin.contacts.form', compact('users', 'academicRoles'));
     }
 
     /**
@@ -45,7 +54,10 @@ class ContactController extends Controller
      */
     public function edit(Contact $contact)
     {
-        //
+        $users = User::latest()->get();
+        $academicRoles = AcademicRole::latest()->get();
+
+        return view('admin.academic-roles.index', compact('users', 'academicRoles', 'contact'));
     }
 
     /**

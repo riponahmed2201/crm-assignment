@@ -60,7 +60,7 @@
 
                                         <div class="col-12">
                                             <label for="email" class="form-label">Email</label>
-                                            <input type="email" name="email"
+                                            <input type="email" name="email" placeholder="Enter email"
                                                 class="form-control @error('email') is-invalid @enderror" required>
                                             @error('email')
                                                 <span class="text-danger mt-2">{{ $message }}</span>
@@ -69,7 +69,7 @@
 
                                         <div class="col-12">
                                             <label for="password" class="form-label">Password</label>
-                                            <input type="password" name="password"
+                                            <input type="password" name="password" placeholder="Enter password"
                                                 class="form-control @error('password') is-invalid @enderror" required>
                                             @error('password')
                                                 <span class="text-danger mt-2">{{ $message }}</span>

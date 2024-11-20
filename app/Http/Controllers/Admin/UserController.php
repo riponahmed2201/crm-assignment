@@ -52,7 +52,8 @@ class UserController extends Controller
 
             return to_route('users.index');
         } catch (Exception $exception) {
-            return back()->with('error', $exception->getMessage());
+            notify()->success("Something error found! Please try again", "Error");
+            return back();
         }
     }
 
@@ -96,7 +97,8 @@ class UserController extends Controller
 
             return back();
         } catch (Exception $exception) {
-            return back()->with('error', $exception->getMessage());
+            notify()->success("Something error found! Please try again", "Error");
+            return back();
         }
     }
 
@@ -118,6 +120,8 @@ class UserController extends Controller
             }
         } catch (Exception $exception) {
             dd($exception);
+            notify()->success("Something error found! Please try again", "Error");
+            return back();
         }
     }
 }

@@ -7,6 +7,23 @@
             </a>
         </li>
 
+        <li class="nav-heading">Academic Management</li>
+
+        <li class="nav-item">
+            <a class="nav-link {{ Request::is('academic-roles') ? '' : 'collapsed' }}"
+                href="{{ route('academic-roles.index') }}">
+                <i class="bi bi-person"></i>
+                <span>Academic Roles</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link {{ Request::is('contacts') ? '' : 'collapsed' }}" href="{{ route('contacts.index') }}">
+                <i class="bi bi-person"></i>
+                <span>Contacts</span>
+            </a>
+        </li>
+
         <li class="nav-heading">User Management</li>
 
         <li class="nav-item">
