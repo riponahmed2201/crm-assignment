@@ -23,7 +23,6 @@
                                     <th>Organization</th>
                                     <th>Email</th>
                                     <th>Phone</th>
-                                    <th>Notes</th>
                                     <th>Created At</th>
                                     <th>Action</th>
                                 </tr>
@@ -32,8 +31,12 @@
                                 @foreach ($contacts as $contact)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $contact->role_name }}</td>
-                                        <td>{{ $contact->description }}</td>
+                                        <td>{{ $contact?->user?->name }}</td>
+                                        <td>{{ $contact?->academicRole?->role_name }}</td>
+                                        <td>{{ $contact->name }}</td>
+                                        <td>{{ $contact->organization }}</td>
+                                        <td>{{ $contact->email }}</td>
+                                        <td>{{ $contact->phone }}</td>
                                         <td>{{ $contact->created_at->diffForHumans() }}</td>
                                         <td>
                                             <a href="{{ route('contacts.edit', $contact->id) }}"

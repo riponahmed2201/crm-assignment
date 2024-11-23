@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\AcademicRole;
 use App\Models\Contact;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 
 class ContactController extends Controller
@@ -16,8 +17,6 @@ class ContactController extends Controller
     public function index()
     {
         $contacts = Contact::with('user', 'academicRole')->latest()->get();
-
-        dd($contacts);
 
         return view('admin.contacts.index', compact('contacts'));
     }
@@ -38,7 +37,35 @@ class ContactController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'user_name' => 'required|integer|exists:users,id',
+            'academic_role' => 'required|integer|exists:academic_roles,id',
+            'name' => 'required|string|max:255',
+            'organization' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255',
+            'phone' => 'required|string|max:20',
+            'notes' => 'required|string',
+        ]);
+
+        try {
+
+            Contact::create([
+                'user_id' => $request->user_name,
+                'academic_role_id' => $request->academic_role,
+                'name' => $request->name,
+                'organization' => $request->organization,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'notes' => $request->notes
+            ]);
+
+            notify()->success("Contact created successfully", "Success");
+
+            return to_route('contacts.index');
+        } catch (Exception $exception) {
+            notify()->success("Something error found! Please try again", "Error");
+            return back();
+        }
     }
 
     /**
@@ -57,7 +84,7 @@ class ContactController extends Controller
         $users = User::latest()->get();
         $academicRoles = AcademicRole::latest()->get();
 
-        return view('admin.academic-roles.index', compact('users', 'academicRoles', 'contact'));
+        return view('admin.contacts.form', compact('users', 'academicRoles', 'contact'));
     }
 
     /**
@@ -65,7 +92,35 @@ class ContactController extends Controller
      */
     public function update(Request $request, Contact $contact)
     {
-        //
+        $request->validate([
+            'user_name' => 'required|integer|exists:users,id',
+            'academic_role' => 'required|integer|exists:academic_roles,id',
+            'name' => 'required|string|max:255',
+            'organization' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255',
+            'phone' => 'required|string|max:20',
+            'notes' => 'required|string',
+        ]);
+
+        try {
+
+            $contact->update([
+                'user_id' => $request->user_name,
+                'academic_role_id' => $request->academic_role,
+                'name' => $request->name,
+                'organization' => $request->organization,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'notes' => $request->notes
+            ]);
+
+            notify()->success("Contact updated successfully", "Success");
+
+            return back();
+        } catch (Exception $exception) {
+            notify()->success("Something error found! Please try again", "Error");
+            return back();
+        }
     }
 
     /**
@@ -73,6 +128,13 @@ class ContactController extends Controller
      */
     public function destroy(Contact $contact)
     {
-        //
+        try {
+            $contact->delete();
+            notify()->success('Contact deleted successfull.', 'Success');
+            return back();
+        } catch (Exception $exception) {
+            notify()->success("Something error found! Please try again", "Error");
+            return back();
+        }
     }
 }

@@ -49,8 +49,12 @@ class User extends Authenticatable
         ];
     }
 
-    public function contact()
+    /**
+     * Define the relationship with the Contact model
+     * A User can have many Contacts
+     */
+    public function contacts()
     {
-        return $this->belongsTo(Contact::class);
+        return $this->hasMany(Contact::class, 'user_id', 'id');
     }
 }

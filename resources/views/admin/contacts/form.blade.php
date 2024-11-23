@@ -48,11 +48,11 @@
                             <label for="academic_role" class="form-label">Academic Role <span
                                     class="text-danger">*</span></label>
                             <select id="academic_role" class="form-select" name="academic_role">
-                                <option selected>Select User Name</option>
+                                <option selected>Select Academic Role</option>
                                 @foreach ($academicRoles as $academicRole)
                                     <option
                                         @isset($contact) {{ $academicRole->id == $contact->academic_role_id ? 'selected' : '' }} @endisset
-                                        value="{{ $academicRole->id }}">{{ $user->name }}
+                                        value="{{ $academicRole->id }}">{{ $academicRole->role_name }}
                                     </option>
                                 @endforeach
                             </select>
