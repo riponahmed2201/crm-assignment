@@ -45,7 +45,7 @@ class TaskController extends Controller
             'user_name' => 'required|integer|exists:users,id',
             'category' => 'required|integer|exists:task_categories,id',
             'title' => 'required|string|max:255',
-            'due_date' => 'required|string|max:20',
+            'due_date' => 'required|max:20',
             'status' => 'required|string|in:pending,in_progress,completed',
             'description' => 'required|string',
         ]);
@@ -99,7 +99,7 @@ class TaskController extends Controller
             'user_name' => 'required|integer|exists:users,id',
             'category' => 'required|integer|exists:task_categories,id',
             'title' => 'required|string|max:255',
-            'due_date' => 'required|string|max:20',
+            'due_date' => 'required|max:20',
             'status' => 'required|string|in:pending,in_progress,completed',
             'description' => 'required|string',
         ]);

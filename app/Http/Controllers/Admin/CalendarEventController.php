@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\CalendarEvent;
+use App\Models\Task;
+use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 
 class CalendarEventController extends Controller
@@ -13,7 +16,9 @@ class CalendarEventController extends Controller
      */
     public function index()
     {
-        //
+        $calendarEvents = CalendarEvent::with('user:id,name', 'task:id,title')->latest()->get();
+
+        return view('admin.calendar-events.index', compact('calendarEvents'));
     }
 
     /**
@@ -21,7 +26,10 @@ class CalendarEventController extends Controller
      */
     public function create()
     {
-        //
+        $tasks = Task::latest()->get();
+        $users = User::latest()->get();
+
+        return view('admin.calendar-events.form', compact('tasks', 'users'));
     }
 
     /**
@@ -29,7 +37,32 @@ class CalendarEventController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'user_name' => 'required|integer|exists:users,id',
+            'task' => 'required|integer|exists:tasks,id',
+            'title' => 'required|string|max:255',
+            'event_date' => 'required|max:20',
+            'reminder' => 'required|boolean|in:1,0'
+        ]);
+
+        try {
+
+            CalendarEvent::create([
+                'user_id' => $request->user_name,
+                'task_id' => $request->task,
+                'title' => $request->title,
+                'event_date' => $request->event_date,
+                'reminder' => $request->reminder
+            ]);
+
+            notify()->success("Calendar event created successfully", "Success");
+
+            return to_route('calendar-events.index');
+        } catch (Exception $exception) {
+            dd($exception);
+            notify()->success("Something error found! Please try again", "Error");
+            return back();
+        }
     }
 
     /**
@@ -45,7 +78,10 @@ class CalendarEventController extends Controller
      */
     public function edit(CalendarEvent $calendarEvent)
     {
-        //
+        $tasks = Task::latest()->get();
+        $users = User::latest()->get();
+
+        return view('admin.calendar-events.form', compact('tasks', 'users', 'calendarEvent'));
     }
 
     /**
@@ -53,7 +89,31 @@ class CalendarEventController extends Controller
      */
     public function update(Request $request, CalendarEvent $calendarEvent)
     {
-        //
+        $request->validate([
+            'user_name' => 'required|integer|exists:users,id',
+            'task' => 'required|integer|exists:tasks,id',
+            'title' => 'required|string|max:255',
+            'event_date' => 'required|max:20',
+            'reminder' => 'required|boolean|in:1,0'
+        ]);
+
+        try {
+
+            $calendarEvent->update([
+                'user_id' => $request->user_name,
+                'task_id' => $request->task,
+                'title' => $request->title,
+                'event_date' => $request->event_date,
+                'reminder' => $request->reminder
+            ]);
+
+            notify()->success("Calendar event updated successfully", "Success");
+
+            return back();
+        } catch (Exception $exception) {
+            notify()->success("Something error found! Please try again", "Error");
+            return back();
+        }
     }
 
     /**
@@ -61,6 +121,13 @@ class CalendarEventController extends Controller
      */
     public function destroy(CalendarEvent $calendarEvent)
     {
-        //
+        try {
+            $calendarEvent->delete();
+            notify()->success('Calendar event deleted successfull.', 'Success');
+            return back();
+        } catch (Exception $exception) {
+            notify()->success("Something error found! Please try again", "Error");
+            return back();
+        }
     }
 }
