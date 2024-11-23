@@ -57,4 +57,13 @@ class User extends Authenticatable
     {
         return $this->hasMany(Contact::class, 'user_id', 'id');
     }
+
+    /**
+     * Define the relationship with the TaskCategory model
+     * A Task belongs to a TaskCategory
+     */
+    public function category()
+    {
+        return $this->belongsTo(TaskCategory::class, 'category_id', 'id');
+    }
 }

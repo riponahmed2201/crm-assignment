@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Task;
+use App\Models\TaskCategory;
+use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 
 class TaskController extends Controller
@@ -13,7 +16,11 @@ class TaskController extends Controller
      */
     public function index()
     {
-        //
+        $statuses = Task::STATUS_ARR;
+
+        $tasks = Task::with('category:id,category_name', 'user:id,name')->latest()->get();
+
+        return view('admin.tasks.index', compact('tasks', 'statuses'));
     }
 
     /**
@@ -21,7 +28,12 @@ class TaskController extends Controller
      */
     public function create()
     {
-        //
+        $taskCategories = TaskCategory::latest()->get();
+        $users = User::latest()->get();
+
+        $statuses = Task::STATUS_ARR;
+
+        return view('admin.tasks.form', compact('taskCategories', 'users', 'statuses'));
     }
 
     /**
@@ -29,7 +41,33 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'user_name' => 'required|integer|exists:users,id',
+            'category' => 'required|integer|exists:task_categories,id',
+            'title' => 'required|string|max:255',
+            'due_date' => 'required|string|max:20',
+            'status' => 'required|string|in:pending,in_progress,completed',
+            'description' => 'required|string',
+        ]);
+
+        try {
+
+            Task::create([
+                'user_id' => $request->user_name,
+                'category_id' => $request->category,
+                'title' => $request->title,
+                'due_date' => $request->due_date,
+                'status' => $request->status,
+                'description' => $request->description
+            ]);
+
+            notify()->success("Task created successfully", "Success");
+
+            return to_route('tasks.index');
+        } catch (Exception $exception) {
+            notify()->success("Something error found! Please try again", "Error");
+            return back();
+        }
     }
 
     /**
@@ -45,7 +83,11 @@ class TaskController extends Controller
      */
     public function edit(Task $task)
     {
-        //
+        $taskCategories = TaskCategory::latest()->get();
+        $users = User::latest()->get();
+        $statuses = Task::STATUS_ARR;
+
+        return view('admin.tasks.form', compact('taskCategories', 'users', 'task', 'statuses'));
     }
 
     /**
@@ -53,7 +95,33 @@ class TaskController extends Controller
      */
     public function update(Request $request, Task $task)
     {
-        //
+        $request->validate([
+            'user_name' => 'required|integer|exists:users,id',
+            'category' => 'required|integer|exists:task_categories,id',
+            'title' => 'required|string|max:255',
+            'due_date' => 'required|string|max:20',
+            'status' => 'required|string|in:pending,in_progress,completed',
+            'description' => 'required|string',
+        ]);
+
+        try {
+
+            $task->update([
+                'user_id' => $request->user_name,
+                'category_id' => $request->category,
+                'title' => $request->title,
+                'due_date' => $request->due_date,
+                'status' => $request->status,
+                'description' => $request->description
+            ]);
+
+            notify()->success("Task updated successfully", "Success");
+
+            return back();
+        } catch (Exception $exception) {
+            notify()->success("Something error found! Please try again", "Error");
+            return back();
+        }
     }
 
     /**
@@ -61,6 +129,13 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-        //
+        try {
+            $task->delete();
+            notify()->success('Task deleted successfull.', 'Success');
+            return back();
+        } catch (Exception $exception) {
+            notify()->success("Something error found! Please try again", "Error");
+            return back();
+        }
     }
 }

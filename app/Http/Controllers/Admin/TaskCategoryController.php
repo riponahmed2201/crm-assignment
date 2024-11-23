@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\TaskCategory;
+use Exception;
 use Illuminate\Http\Request;
 
 class TaskCategoryController extends Controller
@@ -13,7 +14,9 @@ class TaskCategoryController extends Controller
      */
     public function index()
     {
-        //
+        $taskCategories = TaskCategory::latest()->get();
+
+        return view('admin.task-categories.index', compact('taskCategories'));
     }
 
     /**
@@ -21,7 +24,7 @@ class TaskCategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.task-categories.form');
     }
 
     /**
@@ -29,7 +32,22 @@ class TaskCategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'category_name' => 'required|string|max:255|unique:task_categories',
+            'description' => 'required|string',
+        ]);
+
+        try {
+
+            TaskCategory::create($request->all());
+
+            notify()->success("Task category created successfully", "Success");
+
+            return to_route('task-categories.index');
+        } catch (Exception $exception) {
+            notify()->success("Something error found! Please try again", "Error");
+            return back();
+        }
     }
 
     /**
@@ -45,7 +63,7 @@ class TaskCategoryController extends Controller
      */
     public function edit(TaskCategory $taskCategory)
     {
-        //
+        return view('admin.task-categories.form', compact('taskCategory'));
     }
 
     /**
@@ -53,7 +71,22 @@ class TaskCategoryController extends Controller
      */
     public function update(Request $request, TaskCategory $taskCategory)
     {
-        //
+        $request->validate([
+            'category_name' => 'required|string|max:255|unique:task_categories',
+            'description' => 'required|string',
+        ]);
+
+        try {
+
+            $taskCategory->update($request->all());
+
+            notify()->success("Task category updated successfully", "Success");
+
+            return back();
+        } catch (Exception $exception) {
+            notify()->success("Something error found! Please try again", "Error");
+            return back();
+        }
     }
 
     /**
@@ -61,6 +94,13 @@ class TaskCategoryController extends Controller
      */
     public function destroy(TaskCategory $taskCategory)
     {
-        //
+        try {
+            $taskCategory->delete();
+            notify()->success('Task category deleted successfull.', 'Success');
+            return back();
+        } catch (Exception $exception) {
+            notify()->success("Something error found! Please try again", "Error");
+            return back();
+        }
     }
 }

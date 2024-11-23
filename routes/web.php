@@ -41,7 +41,7 @@ Route::group(['middleware' => 'admin'], function () {
         'networking-logs' => NetworkingLogController::class,
         'performances' => PerformanceController::class,
         'research-projects' => ResearchProjectController::class,
-        'task-Categories' => TaskCategoryController::class,
+        'task-categories' => TaskCategoryController::class,
         'tasks' => TaskController::class,
     ]);
 });

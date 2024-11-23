@@ -24,6 +24,24 @@
             </a>
         </li>
 
+        <li class="nav-heading">Task Management</li>
+
+        <li class="nav-item">
+            <a class="nav-link {{ Request::is('task-categories') ? '' : 'collapsed' }}"
+                href="{{ route('task-categories.index') }}">
+                <i class="bi bi-list"></i>
+                <span>Task Categories</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link {{ Request::is('tasks') ? '' : 'collapsed' }}"
+                href="{{ route('tasks.index') }}">
+                <i class="bi bi-list"></i>
+                <span>Tasks</span>
+            </a>
+        </li>
+
         <li class="nav-heading">User Management</li>
 
         <li class="nav-item">
