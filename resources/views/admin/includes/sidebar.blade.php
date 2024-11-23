@@ -51,6 +51,24 @@
             </a>
         </li>
 
+        <li class="nav-heading">Financial Management</li>
+
+        <li class="nav-item">
+            <a class="nav-link {{ Request::is('financial-categories') ? '' : 'collapsed' }}"
+                href="{{ route('financial-categories.index') }}">
+                <i class="bi bi-gem"></i>
+                <span>Financial Categories</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link {{ Request::is('financial-trackers') ? '' : 'collapsed' }}"
+                href="{{ route('financial-trackers.index') }}">
+                <i class="bi bi-menu-button-wide"></i>
+                <span>Financial Trackers</span>
+            </a>
+        </li>
+
         <li class="nav-heading">User Management</li>
 
         <li class="nav-item">

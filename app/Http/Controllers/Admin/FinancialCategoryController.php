@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\FinancialCategory;
+use Exception;
 use Illuminate\Http\Request;
 
 class FinancialCategoryController extends Controller
@@ -13,7 +14,9 @@ class FinancialCategoryController extends Controller
      */
     public function index()
     {
-        //
+        $financialCategories = FinancialCategory::latest()->get();
+
+        return view('admin.financial-categories.index', compact('financialCategories'));
     }
 
     /**
@@ -21,7 +24,7 @@ class FinancialCategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.financial-categories.form');
     }
 
     /**
@@ -29,7 +32,22 @@ class FinancialCategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'category_name' => 'required|string|max:255|unique:financial_categories',
+            'description' => 'required|string',
+        ]);
+
+        try {
+
+            FinancialCategory::create($request->all());
+
+            notify()->success("Financial category created successfully", "Success");
+
+            return to_route('financial-categories.index');
+        } catch (Exception $exception) {
+            notify()->success("Something error found! Please try again", "Error");
+            return back();
+        }
     }
 
     /**
@@ -45,7 +63,7 @@ class FinancialCategoryController extends Controller
      */
     public function edit(FinancialCategory $financialCategory)
     {
-        //
+        return view('admin.financial-categories.form', compact('financialCategory'));
     }
 
     /**
@@ -53,7 +71,22 @@ class FinancialCategoryController extends Controller
      */
     public function update(Request $request, FinancialCategory $financialCategory)
     {
-        //
+        $request->validate([
+            'category_name' => 'required|string|max:255|unique:financial_categories',
+            'description' => 'required|string',
+        ]);
+
+        try {
+
+            $financialCategory->update($request->all());
+
+            notify()->success("Financial category updated successfully", "Success");
+
+            return back();
+        } catch (Exception $exception) {
+            notify()->success("Something error found! Please try again", "Error");
+            return back();
+        }
     }
 
     /**
@@ -61,6 +94,13 @@ class FinancialCategoryController extends Controller
      */
     public function destroy(FinancialCategory $financialCategory)
     {
-        //
+        try {
+            $financialCategory->delete();
+            notify()->success('Financial category deleted successfull.', 'Success');
+            return back();
+        } catch (Exception $exception) {
+            notify()->success("Something error found! Please try again", "Error");
+            return back();
+        }
     }
 }

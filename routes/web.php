@@ -28,7 +28,7 @@ Route::group(['middleware' => 'admin'], function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('profile', [ProfileController::class, 'index'])->name('profile');
 
-    //Users
+    //Resources routes
     Route::resources([
         'users' => UserController::class,
         'academic-roles' => AcademicRoleController::class,
