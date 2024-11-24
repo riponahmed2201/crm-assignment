@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\ResearchProject;
+use App\Models\Task;
+use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 
 class ResearchProjectController extends Controller
@@ -13,7 +16,10 @@ class ResearchProjectController extends Controller
      */
     public function index()
     {
-        //
+        $researchProjects = ResearchProject::with('user', 'task')->latest()->get();
+        $statuses = ResearchProject::STATUS_ARR;
+
+        return view('admin.research-projects.index', compact('researchProjects', 'statuses'));
     }
 
     /**
@@ -21,7 +27,12 @@ class ResearchProjectController extends Controller
      */
     public function create()
     {
-        //
+        $statuses = ResearchProject::STATUS_ARR;
+
+        $users = User::latest()->get();
+        $tasks = Task::latest()->get();
+
+        return view('admin.research-projects.form', compact('users', 'tasks', 'statuses'));
     }
 
     /**
@@ -29,7 +40,31 @@ class ResearchProjectController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'user_name' => 'required|integer|exists:users,id',
+            'task' => 'required|integer|exists:tasks,id',
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'status' => 'required|string|in:proposed,in_progress,on_hold,completed,cancelled'
+        ]);
+
+        try {
+
+            ResearchProject::create([
+                'user_id' => $request->user_name,
+                'task_id' => $request->task,
+                'title' => $request->title,
+                'description' => $request->description,
+                'status' => $request->status
+            ]);
+
+            notify()->success("Research project created successfully", "Success");
+
+            return to_route('research-projects.index');
+        } catch (Exception $exception) {
+            notify()->success("Something error found! Please try again", "Error");
+            return back();
+        }
     }
 
     /**
@@ -45,7 +80,12 @@ class ResearchProjectController extends Controller
      */
     public function edit(ResearchProject $researchProject)
     {
-        //
+        $statuses = ResearchProject::STATUS_ARR;
+
+        $users = User::latest()->get();
+        $tasks = Task::latest()->get();
+
+        return view('admin.research-projects.form', compact('users', 'tasks', 'statuses', 'researchProject'));
     }
 
     /**
@@ -53,7 +93,31 @@ class ResearchProjectController extends Controller
      */
     public function update(Request $request, ResearchProject $researchProject)
     {
-        //
+        $request->validate([
+            'user_name' => 'required|integer|exists:users,id',
+            'task' => 'required|integer|exists:tasks,id',
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'status' => 'required|string|in:proposed,in_progress,on_hold,completed,cancelled'
+        ]);
+
+        try {
+
+            $researchProject->update([
+                'user_id' => $request->user_name,
+                'task_id' => $request->task,
+                'title' => $request->title,
+                'description' => $request->description,
+                'status' => $request->status
+            ]);
+
+            notify()->success("Research project updated successfully", "Success");
+
+            return back();
+        } catch (Exception $exception) {
+            notify()->success("Something error found! Please try again", "Error");
+            return back();
+        }
     }
 
     /**
@@ -61,6 +125,13 @@ class ResearchProjectController extends Controller
      */
     public function destroy(ResearchProject $researchProject)
     {
-        //
+        try {
+            $researchProject->delete();
+            notify()->success('Research project deleted successfull.', 'Success');
+            return back();
+        } catch (Exception $exception) {
+            notify()->success("Something error found! Please try again", "Error");
+            return back();
+        }
     }
 }

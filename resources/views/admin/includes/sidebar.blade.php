@@ -25,6 +25,14 @@
         </li>
 
         <li class="nav-item">
+            <a class="nav-link {{ Request::is('research-projects') ? '' : 'collapsed' }}"
+                href="{{ route('research-projects.index') }}">
+                <i class="bi bi-gem"></i>
+                <span>Research Projects</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
             <a class="nav-link {{ Request::is('networking-logs') ? '' : 'collapsed' }}"
                 href="{{ route('networking-logs.index') }}">
                 <i class="bi bi-menu-button-wide"></i>
@@ -93,7 +101,7 @@
             <a class="nav-link {{ Request::is('custom-notes') ? '' : 'collapsed' }}"
                 href="{{ route('custom-notes.index') }}">
                 <i class="bi bi-layout-text-window-reverse"></i>
-                <span>Custom notes</span>
+                <span>Custom Notes</span>
             </a>
         </li>
 

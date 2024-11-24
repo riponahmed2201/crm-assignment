@@ -59,7 +59,6 @@ class CalendarEventController extends Controller
 
             return to_route('calendar-events.index');
         } catch (Exception $exception) {
-            dd($exception);
             notify()->success("Something error found! Please try again", "Error");
             return back();
         }
