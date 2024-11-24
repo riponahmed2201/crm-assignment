@@ -45,7 +45,7 @@
 
                     <div class="col-md-6">
                         <div class="form-group mb-3">
-                            <label for="category" class="form-label">Task <span class="text-danger">*</span></label>
+                            <label for="task" class="form-label">Task <span class="text-danger">*</span></label>
                             <select id="task" class="form-select" name="task">
                                 <option selected>Select Task</option>
                                 @foreach ($tasks as $task)

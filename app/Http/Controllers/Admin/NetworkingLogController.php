@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Contact;
 use App\Models\NetworkingLog;
+use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 
 class NetworkingLogController extends Controller
@@ -13,7 +16,9 @@ class NetworkingLogController extends Controller
      */
     public function index()
     {
-        //
+        $networkingLogs = NetworkingLog::with('user', 'contact')->latest()->get();
+
+        return view('admin.networking-logs.index', compact('networkingLogs'));
     }
 
     /**
@@ -21,7 +26,10 @@ class NetworkingLogController extends Controller
      */
     public function create()
     {
-        //
+        $users = User::latest()->get();
+        $contacts = Contact::latest()->get();
+
+        return view('admin.networking-logs.form', compact('users', 'contacts'));
     }
 
     /**
@@ -29,7 +37,31 @@ class NetworkingLogController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'user' => 'required|integer|exists:users,id',
+            'contact' => 'required|integer|exists:contacts,id',
+            'meeting_date' => 'required|date',
+            'follow_up_date' => 'required|date',
+            'notes' => 'required|string',
+        ]);
+
+        try {
+
+            NetworkingLog::create([
+                'user_id' => $request->user,
+                'contact_id' => $request->contact,
+                'meeting_date' => $request->meeting_date,
+                'follow_up_date' => $request->follow_up_date,
+                'notes' => $request->notes
+            ]);
+
+            notify()->success("Networking log created successfully", "Success");
+
+            return to_route('networking-logs.index');
+        } catch (Exception $exception) {
+            notify()->success("Something error found! Please try again", "Error");
+            return back();
+        }
     }
 
     /**
@@ -45,7 +77,10 @@ class NetworkingLogController extends Controller
      */
     public function edit(NetworkingLog $networkingLog)
     {
-        //
+        $users = User::latest()->get();
+        $contacts = Contact::latest()->get();
+
+        return view('admin.networking-logs.form', compact('users', 'contacts', 'networkingLog'));
     }
 
     /**
@@ -53,7 +88,31 @@ class NetworkingLogController extends Controller
      */
     public function update(Request $request, NetworkingLog $networkingLog)
     {
-        //
+        $request->validate([
+            'user' => 'required|integer|exists:users,id',
+            'contact' => 'required|integer|exists:contacts,id',
+            'meeting_date' => 'required|date',
+            'follow_up_date' => 'required|date',
+            'notes' => 'required|string',
+        ]);
+
+        try {
+
+            $networkingLog->update([
+                'user_id' => $request->user,
+                'contact_id' => $request->contact,
+                'meeting_date' => $request->meeting_date,
+                'follow_up_date' => $request->follow_up_date,
+                'notes' => $request->notes
+            ]);
+
+            notify()->success("Networking log updated successfully", "Success");
+
+            return back();
+        } catch (Exception $exception) {
+            notify()->success("Something error found! Please try again", "Error");
+            return back();
+        }
     }
 
     /**
@@ -61,6 +120,13 @@ class NetworkingLogController extends Controller
      */
     public function destroy(NetworkingLog $networkingLog)
     {
-        //
+        try {
+            $networkingLog->delete();
+            notify()->success('Networking log deleted successfull.', 'Success');
+            return back();
+        } catch (Exception $exception) {
+            notify()->success("Something error found! Please try again", "Error");
+            return back();
+        }
     }
 }

@@ -24,6 +24,14 @@
             </a>
         </li>
 
+        <li class="nav-item">
+            <a class="nav-link {{ Request::is('networking-logs') ? '' : 'collapsed' }}"
+                href="{{ route('networking-logs.index') }}">
+                <i class="bi bi-menu-button-wide"></i>
+                <span>Networking Logs</span>
+            </a>
+        </li>
+
         <li class="nav-heading">Calender Event Management</li>
 
         <li class="nav-item">
