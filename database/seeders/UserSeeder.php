@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -14,6 +15,8 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
+        $now = Carbon::now();
+
         $users = [
             [
                 'name' => 'Admin',
@@ -21,7 +24,9 @@ class UserSeeder extends Seeder
                 'phone' => '01746-000000',
                 'role' => 'admin',
                 'password' => Hash::make('password'),
-                'deletable' => false
+                'deletable' => false,
+                'created_at' => $now,
+                'updated_at' => $now,
             ],
             [
                 'name' => 'User',
@@ -29,7 +34,9 @@ class UserSeeder extends Seeder
                 'phone' => '01740-000000',
                 'role' => 'user',
                 'password' => Hash::make('password'),
-                'deletable' => false
+                'deletable' => false,
+                'created_at' => $now,
+                'updated_at' => $now,
             ]
         ];
 

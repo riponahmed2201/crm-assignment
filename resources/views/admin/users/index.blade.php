@@ -34,7 +34,7 @@
                                         <td>{{ $user->phone }}</td>
                                         <td> <span class="badge rounded-pill bg-primary">{{ ucwords($user->role) }}</span>
                                         </td>
-                                        <td>{{ $user->created_at->diffForHumans() }}</td>
+                                        <td>{{ $user?->created_at?->diffForHumans() }}</td>
                                         <td>
                                             <a href="{{ route('users.edit', $user->id) }}"
                                                 class="btn btn-sm btn-primary rounded-pill"> Edit</a>

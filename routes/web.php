@@ -27,6 +27,8 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('dashboard', DashboardController::class)->name('dashboard');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('profile', [ProfileController::class, 'index'])->name('profile');
+    Route::put('profile/update', [ProfileController::class, 'update'])->name('profile.update');
+    Route::put('password/update', [AuthController::class, 'updatePassword'])->name('password.update');
 
     //Resources routes
     Route::resources([
