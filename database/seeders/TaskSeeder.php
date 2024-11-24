@@ -38,7 +38,7 @@ class TaskSeeder extends Seeder
                 'updated_at' => $now,
             ],
             [
-                'user_id' => 2,
+                'user_id' => 1,
                 'title' => 'Submit Research Paper Draft',
                 'description' => 'Submit the first draft of the research paper for review.',
                 'category_id' => 2, // Assuming category 2 exists in the task_categories table
@@ -48,7 +48,7 @@ class TaskSeeder extends Seeder
                 'updated_at' => $now,
             ],
             [
-                'user_id' => 2,
+                'user_id' => 1,
                 'title' => 'Study for Final Exam',
                 'description' => 'Start reviewing materials for the upcoming final exam in Data Science.',
                 'category_id' => 3, // Assuming category 3 exists in the task_categories table

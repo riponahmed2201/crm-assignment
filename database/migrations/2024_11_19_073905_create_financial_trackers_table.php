@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('financial_trackers', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('category_id');
             $table->string('title');
             $table->double('amount');
-            $table->string('category');
             $table->date('due_date');
             $table->enum('status', ['pending', 'received'])->default('pending');
             $table->timestamps();

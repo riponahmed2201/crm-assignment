@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Performance;
+use App\Models\Task;
+use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 
 class PerformanceController extends Controller
@@ -13,7 +16,9 @@ class PerformanceController extends Controller
      */
     public function index()
     {
-        //
+        $performances = Performance::with('user', 'task')->latest()->get();
+
+        return view('admin.performances.index', compact('performances'));
     }
 
     /**
@@ -21,7 +26,10 @@ class PerformanceController extends Controller
      */
     public function create()
     {
-        //
+        $users = User::latest()->get();
+        $tasks = Task::latest()->get();
+
+        return view('admin.performances.form', compact('users', 'tasks'));
     }
 
     /**
@@ -29,7 +37,29 @@ class PerformanceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'user_name' => 'required|integer|exists:users,id',
+            'task' => 'required|integer|exists:tasks,id',
+            'grade' => 'required|string|max:10',
+            'completion_percentage' => 'required|string'
+        ]);
+
+        try {
+
+            Performance::create([
+                'user_id' => $request->user_name,
+                'task_id' => $request->task,
+                'grade' => $request->grade,
+                'completion_percentage' => $request->completion_percentage
+            ]);
+
+            notify()->success("Performance created successfully", "Success");
+
+            return to_route('performances.index');
+        } catch (Exception $exception) {
+            notify()->success("Something error found! Please try again", "Error");
+            return back();
+        }
     }
 
     /**
@@ -45,7 +75,10 @@ class PerformanceController extends Controller
      */
     public function edit(Performance $performance)
     {
-        //
+        $users = User::latest()->get();
+        $tasks = Task::latest()->get();
+
+        return view('admin.performances.form', compact('users', 'tasks', 'performance'));
     }
 
     /**
@@ -53,7 +86,29 @@ class PerformanceController extends Controller
      */
     public function update(Request $request, Performance $performance)
     {
-        //
+        $request->validate([
+            'user_name' => 'required|integer|exists:users,id',
+            'task' => 'required|integer|exists:tasks,id',
+            'grade' => 'required|string|max:10',
+            'completion_percentage' => 'required|string'
+        ]);
+
+        try {
+
+            $performance->update([
+                'user_id' => $request->user_name,
+                'task_id' => $request->task,
+                'grade' => $request->grade,
+                'completion_percentage' => $request->completion_percentage
+            ]);
+
+            notify()->success("Performance updated successfully", "Success");
+
+            return back();
+        } catch (Exception $exception) {
+            notify()->success("Something error found! Please try again", "Error");
+            return back();
+        }
     }
 
     /**
@@ -61,6 +116,13 @@ class PerformanceController extends Controller
      */
     public function destroy(Performance $performance)
     {
-        //
+        try {
+            $performance->delete();
+            notify()->success('Performance deleted successfull.', 'Success');
+            return back();
+        } catch (Exception $exception) {
+            notify()->success("Something error found! Please try again", "Error");
+            return back();
+        }
     }
 }

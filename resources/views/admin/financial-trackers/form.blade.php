@@ -1,25 +1,26 @@
 @extends('master')
 
-@section('title', 'Task')
+@section('title', 'Financial trackers')
 
-@isset($task)
-    @section('page_title', 'Edit task')
+@isset($financialTracker)
+    @section('page_title', 'Edit financial trackers')
 @else
-@section('page_title', 'Add task')
+@section('page_title', 'Add financial trackers')
 @endisset
 
 @section('content')
 <section class="section">
     <div class="card">
         <div class="card-header">
-            <a href="{{ route('tasks.index') }}" class="btn btn-sm btn-danger float-end"> <i class="bi-list"></i>
+            <a href="{{ route('financial-trackers.index') }}" class="btn btn-sm btn-danger float-end"> <i
+                    class="bi-list"></i>
                 Back to
                 list</a>
         </div>
         <form class="row g-3 p-4" method="POST"
-            action="{{ isset($task) ? route('tasks.update', $task->id) : route('tasks.store') }}">
+            action="{{ isset($financialTracker) ? route('financial-trackers.update', $financialTracker->id) : route('financial-trackers.store') }}">
             @csrf
-            @isset($task)
+            @isset($financialTracker)
                 @method('PUT')
             @endisset
             <div class="card-body">
@@ -32,7 +33,7 @@
                                 <option selected>Select User</option>
                                 @foreach ($users as $user)
                                     <option
-                                        @isset($task) {{ $user->id == $task->user_id ? 'selected' : '' }} @endisset
+                                        @isset($financialTracker) {{ $user->id == $financialTracker->user_id ? 'selected' : '' }} @endisset
                                         value="{{ $user->id }}">{{ $user->name }}
                                     </option>
                                 @endforeach
@@ -48,10 +49,10 @@
                             <label for="category" class="form-label">Category <span class="text-danger">*</span></label>
                             <select id="category" class="form-select" name="category">
                                 <option selected>Select Category</option>
-                                @foreach ($taskCategories as $taskCategory)
+                                @foreach ($financialCategories as $financialCategory)
                                     <option
-                                        @isset($task) {{ $taskCategory->id == $task->category_id ? 'selected' : '' }} @endisset
-                                        value="{{ $taskCategory->id }}">{{ $taskCategory->category_name }}
+                                        @isset($financialTracker) {{ $financialCategory->id == $financialTracker->category_id ? 'selected' : '' }} @endisset
+                                        value="{{ $financialCategory->id }}">{{ $financialCategory->category_name }}
                                     </option>
                                 @endforeach
                             </select>
@@ -66,8 +67,20 @@
                             <label for="title" class="form-label">Title <span class="text-danger">*</span>
                             </label>
                             <input type="text" class="form-control" name="title" placeholder="Enter title"
-                                value="{{ isset($task) ? $task->title : old('title') }}">
+                                value="{{ isset($financialTracker) ? $financialTracker->title : old('title') }}">
                             @error('title')
+                                <span class="text-danger mt-2">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label for="amount" class="form-label">Amount <span class="text-danger">*</span>
+                            </label>
+                            <input type="text" class="form-control" name="amount" placeholder="Enter amount"
+                                value="{{ isset($financialTracker) ? $financialTracker->amount : old('amount') }}">
+                            @error('amount')
                                 <span class="text-danger mt-2">{{ $message }}</span>
                             @enderror
                         </div>
@@ -78,7 +91,7 @@
                             <label for="due_date" class="form-label">Due date <span class="text-danger">*</span>
                             </label>
                             <input type="date" class="form-control" name="due_date" placeholder="Enter due date"
-                                value="{{ isset($task) ? $task->due_date : old('due_date') }}">
+                                value="{{ isset($financialTracker) ? $financialTracker->due_date : old('due_date') }}">
                             @error('due_date')
                                 <span class="text-danger mt-2">{{ $message }}</span>
                             @enderror
@@ -95,7 +108,7 @@
 
                                     @foreach ($statuses as $key => $status)
                                         <option
-                                            @isset($task) {{ $task->status == $key ? 'selected' : '' }} @endisset
+                                            @isset($financialTracker) {{ $financialTracker->status == $key ? 'selected' : '' }} @endisset
                                             value="{{ $key }}">{{ $status }}</option>
                                     @endforeach
 
@@ -104,17 +117,6 @@
                                     <span class="text-danger mt-2">{{ $message }}</span>
                                 @enderror
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-12">
-                        <div class="form-group mb-3">
-                            <label for="description" class="form-label">Description <span
-                                    class="text-danger">*</span></label>
-                            <textarea class="form-control" name="description" placeholder="Enter description">{{ isset($task) ? $task->description : old('description') }}</textarea>
-                            @error('description')
-                                <span class="text-danger mt-2">{{ $message }}</span>
-                            @enderror
                         </div>
                     </div>
                 </div>

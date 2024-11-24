@@ -17,8 +17,8 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>User Name</th>
-                                    <th>Category Name</th>
+                                    <th>User</th>
+                                    <th>Category</th>
                                     <th>Title</th>
                                     <th>Due Date</th>
                                     <th>Status</th>

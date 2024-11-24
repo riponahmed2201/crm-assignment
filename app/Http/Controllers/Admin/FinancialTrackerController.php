@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\FinancialCategory;
 use App\Models\FinancialTracker;
+use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
 
 class FinancialTrackerController extends Controller
@@ -13,7 +16,11 @@ class FinancialTrackerController extends Controller
      */
     public function index()
     {
-        //
+        $financialTrackers = FinancialTracker::with('user', 'category')->latest()->get();
+
+        $statuses = FinancialTracker::STATUS_ARR;
+
+        return view('admin.financial-trackers.index', compact('statuses', 'financialTrackers'));
     }
 
     /**
@@ -21,7 +28,12 @@ class FinancialTrackerController extends Controller
      */
     public function create()
     {
-        //
+        $statuses = FinancialTracker::STATUS_ARR;
+
+        $financialCategories = FinancialCategory::latest()->get();
+        $users = User::latest()->get();
+
+        return view('admin.financial-trackers.form', compact('statuses', 'financialCategories', 'users'));
     }
 
     /**
@@ -29,7 +41,34 @@ class FinancialTrackerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'user_name' => 'required|integer|exists:users,id',
+            'category' => 'required|integer|exists:financial_categories,id',
+            'title' => 'required|string|max:255',
+            'amount' => 'required',
+            'due_date' => 'required|max:20',
+            'status' => 'required|string|in:pending,received'
+        ]);
+
+        try {
+
+            FinancialTracker::create([
+                'user_id' => $request->user_name,
+                'category_id' => $request->category,
+                'title' => $request->title,
+                'amount' => $request->amount,
+                'due_date' => $request->due_date,
+                'status' => $request->status,
+                'description' => $request->description
+            ]);
+
+            notify()->success("Financial tracker created successfully", "Success");
+
+            return to_route('financial-trackers.index');
+        } catch (Exception $exception) {
+            notify()->success("Something error found! Please try again", "Error");
+            return back();
+        }
     }
 
     /**
@@ -45,7 +84,12 @@ class FinancialTrackerController extends Controller
      */
     public function edit(FinancialTracker $financialTracker)
     {
-        //
+        $statuses = FinancialTracker::STATUS_ARR;
+
+        $financialCategories = FinancialCategory::latest()->get();
+        $users = User::latest()->get();
+
+        return view('admin.financial-trackers.form', compact('statuses', 'financialCategories', 'users', 'financialTracker'));
     }
 
     /**
@@ -53,7 +97,34 @@ class FinancialTrackerController extends Controller
      */
     public function update(Request $request, FinancialTracker $financialTracker)
     {
-        //
+        $request->validate([
+            'user_name' => 'required|integer|exists:users,id',
+            'category' => 'required|integer|exists:financial_categories,id',
+            'title' => 'required|string|max:255',
+            'amount' => 'required',
+            'due_date' => 'required|max:20',
+            'status' => 'required|string|in:pending,received'
+        ]);
+
+        try {
+
+            $financialTracker->create([
+                'user_id' => $request->user_name,
+                'category_id' => $request->category,
+                'title' => $request->title,
+                'amount' => $request->amount,
+                'due_date' => $request->due_date,
+                'status' => $request->status,
+                'description' => $request->description
+            ]);
+
+            notify()->success("Financial tracker updated successfully", "Success");
+
+            return to_route('financial-trackers.index');
+        } catch (Exception $exception) {
+            notify()->success("Something error found! Please try again", "Error");
+            return back();
+        }
     }
 
     /**
@@ -61,6 +132,13 @@ class FinancialTrackerController extends Controller
      */
     public function destroy(FinancialTracker $financialTracker)
     {
-        //
+        try {
+            $financialTracker->delete();
+            notify()->success('Financial tracker deleted successfull.', 'Success');
+            return back();
+        } catch (Exception $exception) {
+            notify()->success("Something error found! Please try again", "Error");
+            return back();
+        }
     }
 }

@@ -1,25 +1,25 @@
 @extends('master')
 
-@section('title', 'Calendar event')
+@section('title', 'Performances')
 
-@isset($calendarEvent)
-    @section('page_title', 'Edit calendar event')
+@isset($performance)
+    @section('page_title', 'Edit performances')
 @else
-@section('page_title', 'Add calendar event')
+@section('page_title', 'Add performances')
 @endisset
 
 @section('content')
 <section class="section">
     <div class="card">
         <div class="card-header">
-            <a href="{{ route('calendar-events.index') }}" class="btn btn-sm btn-danger float-end"> <i class="bi-list"></i>
+            <a href="{{ route('performances.index') }}" class="btn btn-sm btn-danger float-end"> <i class="bi-list"></i>
                 Back to
                 list</a>
         </div>
         <form class="row g-3 p-4" method="POST"
-            action="{{ isset($calendarEvent) ? route('calendar-events.update', $calendarEvent->id) : route('calendar-events.store') }}">
+            action="{{ isset($performance) ? route('performances.update', $performance->id) : route('performances.store') }}">
             @csrf
-            @isset($calendarEvent)
+            @isset($performance)
                 @method('PUT')
             @endisset
             <div class="card-body">
@@ -32,7 +32,7 @@
                                 <option selected>Select User</option>
                                 @foreach ($users as $user)
                                     <option
-                                        @isset($calendarEvent) {{ $user->id == $calendarEvent->user_id ? 'selected' : '' }} @endisset
+                                        @isset($performance) {{ $user->id == $performance->user_id ? 'selected' : '' }} @endisset
                                         value="{{ $user->id }}">{{ $user->name }}
                                     </option>
                                 @endforeach
@@ -50,7 +50,7 @@
                                 <option selected>Select Task</option>
                                 @foreach ($tasks as $task)
                                     <option
-                                        @isset($calendarEvent) {{ $task->id == $calendarEvent->task_id ? 'selected' : '' }} @endisset
+                                        @isset($performance) {{ $task->id == $performance->task_id ? 'selected' : '' }} @endisset
                                         value="{{ $task->id }}">{{ $task->title }}
                                     </option>
                                 @endforeach
@@ -63,11 +63,11 @@
 
                     <div class="col-md-6">
                         <div class="form-group mb-3">
-                            <label for="title" class="form-label">Title <span class="text-danger">*</span>
+                            <label for="grade" class="form-label">Grade <span class="text-danger">*</span>
                             </label>
-                            <input type="text" class="form-control" name="title" placeholder="Enter title"
-                                value="{{ isset($calendarEvent) ? $calendarEvent->title : old('title') }}">
-                            @error('title')
+                            <input type="text" class="form-control" name="grade" placeholder="Enter grade"
+                                value="{{ isset($performance) ? $performance->grade : old('grade') }}">
+                            @error('grade')
                                 <span class="text-danger mt-2">{{ $message }}</span>
                             @enderror
                         </div>
@@ -75,37 +75,15 @@
 
                     <div class="col-md-6">
                         <div class="form-group mb-3">
-                            <label for="event_date" class="form-label">Event date <span class="text-danger">*</span>
+                            <label for="completion_percentage" class="form-label">Completion Percentage <span
+                                    class="text-danger">*</span>
                             </label>
-                            <input type="date" class="form-control" name="event_date" placeholder="Enter due date"
-                                value="{{ isset($calendarEvent) ? $calendarEvent->event_date : old('event_date') }}">
-                            @error('event_date')
+                            <input type="text" class="form-control" name="completion_percentage"
+                                placeholder="Enter completion percentage"
+                                value="{{ isset($performance) ? $performance->completion_percentage : old('completion_percentage') }}">
+                            @error('completion_percentage')
                                 <span class="text-danger mt-2">{{ $message }}</span>
                             @enderror
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <div class="form-group mb-3">
-                            <div class="form-group mb-3">
-                                <label for="reminder" class="form-label">Reminder <span
-                                        class="text-danger">*</span></label>
-                                <select id="reminder" class="form-select" name="reminder">
-                                    <option selected>Select Reminder</option>
-
-                                    <option
-                                        @isset($calendarEvent) {{ $calendarEvent->reminder == 1 ? 'selected' : '' }} @endisset
-                                        value="1">Yes</option>
-
-                                    <option
-                                        @isset($calendarEvent) {{ $calendarEvent->reminder == 0 ? 'selected' : '' }} @endisset
-                                        value="0">No</option>
-
-                                </select>
-                                @error('reminder')
-                                    <span class="text-danger mt-2">{{ $message }}</span>
-                                @enderror
-                            </div>
                         </div>
                     </div>
                 </div>

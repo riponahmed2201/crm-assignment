@@ -14,18 +14,26 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::updateOrCreate(
-            [
-                'email' => 'admin@gmail.com',
-            ],
+        $users = [
             [
                 'name' => 'Admin',
+                'email' => 'admin@gmail.com',
                 'phone' => '01746-000000',
                 'role' => 'admin',
                 'password' => Hash::make('password'),
                 'deletable' => false
+            ],
+            [
+                'name' => 'User',
+                'email' => 'user@gmail.com',
+                'phone' => '01740-000000',
+                'role' => 'user',
+                'password' => Hash::make('password'),
+                'deletable' => false
             ]
-        );
+        ];
+
+        User::insert($users);
 
         $this->command->info('Admin user created successfully.');
     }

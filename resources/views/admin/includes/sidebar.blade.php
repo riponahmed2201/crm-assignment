@@ -69,6 +69,26 @@
             </a>
         </li>
 
+        <li class="nav-heading">Performances Management</li>
+
+        <li class="nav-item">
+            <a class="nav-link {{ Request::is('performances') ? '' : 'collapsed' }}"
+                href="{{ route('performances.index') }}">
+                <i class="bi bi-card-list"></i>
+                <span>Performances</span>
+            </a>
+        </li>
+
+        <li class="nav-heading">Notes Management</li>
+
+        <li class="nav-item">
+            <a class="nav-link {{ Request::is('custom-notes') ? '' : 'collapsed' }}"
+                href="{{ route('custom-notes.index') }}">
+                <i class="bi bi-layout-text-window-reverse"></i>
+                <span>Custom notes</span>
+            </a>
+        </li>
+
         <li class="nav-heading">User Management</li>
 
         <li class="nav-item">
