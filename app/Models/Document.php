@@ -6,5 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Document extends Model
 {
-    //
+    protected $table = 'documents';
+    protected $primaryKey = 'id';
+    protected $fillable = ['user_id', 'title', 'file_path', 'tags'];
+
+    /**
+     * Define the relationship with the User model
+     * A Document belongs to a User
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
 }

@@ -40,6 +40,14 @@
             </a>
         </li>
 
+        <li class="nav-item">
+            <a class="nav-link {{ Request::is('documents') ? '' : 'collapsed' }}"
+                href="{{ route('documents.index') }}">
+                <i class="bi bi-layout-text-window-reverse"></i>
+                <span>Documents</span>
+            </a>
+        </li>
+
         <li class="nav-heading">Calender Event Management</li>
 
         <li class="nav-item">
