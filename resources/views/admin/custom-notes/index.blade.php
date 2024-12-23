@@ -8,10 +8,12 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
-                    <div class="card-header">
-                        <a href="{{ route('custom-notes.create') }}" class="btn btn-sm btn-primary float-end"> <i
-                                class="bi-file-earmark-plus-fill"></i> Add New</a>
-                    </div>
+                    @if (Auth::user()->role === 'admin')
+                        <div class="card-header">
+                            <a href="{{ route('custom-notes.create') }}" class="btn btn-sm btn-primary float-end"> <i
+                                    class="bi-file-earmark-plus-fill"></i> Add New</a>
+                        </div>
+                    @endif
                     <div class="card-body mt-2">
                         <table class="table datatable">
                             <thead>
@@ -23,7 +25,9 @@
                                     <th>Tags</th>
                                     <th>Created By</th>
                                     <th>Created At</th>
-                                    <th>Action</th>
+                                    @if (Auth::user()->role === 'admin')
+                                        <th>Action</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody>
@@ -36,19 +40,21 @@
                                         <td>{{ $customNote->tags }}</td>
                                         <td>{{ $customNote?->creator?->name }}</td>
                                         <td>{{ $customNote->created_at->diffForHumans() }}</td>
-                                        <td>
-                                            <a href="{{ route('custom-notes.edit', $customNote->id) }}"
-                                                class="btn btn-sm btn-primary">
-                                                Edit</a>
+                                        @if (Auth::user()->role === 'admin')
+                                            <td>
+                                                <a href="{{ route('custom-notes.edit', $customNote->id) }}"
+                                                    class="btn btn-sm btn-primary">
+                                                    Edit</a>
 
-                                            <form action="{{ route('custom-notes.destroy', $customNote->id) }}"
-                                                method="POST">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger"
-                                                    onclick="return confirm('Are you sure you want to delete this item?')">Delete</button>
-                                            </form>
-                                        </td>
+                                                <form action="{{ route('custom-notes.destroy', $customNote->id) }}"
+                                                    method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger"
+                                                        onclick="return confirm('Are you sure you want to delete this item?')">Delete</button>
+                                                </form>
+                                            </td>
+                                        @endif
                                     </tr>
                                 @endforeach
                             </tbody>

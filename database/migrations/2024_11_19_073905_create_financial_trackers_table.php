@@ -19,8 +19,8 @@ return new class extends Migration
             $table->double('amount');
             $table->date('due_date');
             $table->enum('status', ['pending', 'received'])->default('pending');
-            $table->tinyInteger('created_by');
-            $table->tinyInteger('updated_by');
+            $table->tinyInteger('created_by')->nullable();
+            $table->tinyInteger('updated_by')->nullable();
             $table->timestamps();
         });
     }

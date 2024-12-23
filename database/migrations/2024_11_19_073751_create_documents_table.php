@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('title');
             $table->string('file_path');
             $table->text('tags');
-            $table->tinyInteger('created_by');
-            $table->tinyInteger('updated_by');
+            $table->tinyInteger('created_by')->nullable();
+            $table->tinyInteger('updated_by')->nullable();
             $table->timestamps();
         });
     }

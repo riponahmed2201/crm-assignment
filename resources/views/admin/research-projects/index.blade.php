@@ -8,10 +8,14 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
-                    <div class="card-header">
-                        <a href="{{ route('research-projects.create') }}" class="btn btn-sm btn-primary float-end"> <i
-                                class="bi-file-earmark-plus-fill"></i> Add New</a>
-                    </div>
+
+                    @if (Auth::user()->role == 'admin')
+                        <div class="card-header">
+                            <a href="{{ route('research-projects.create') }}" class="btn btn-sm btn-primary float-end"> <i
+                                    class="bi-file-earmark-plus-fill"></i> Add New</a>
+                        </div>
+                    @endif
+
                     <div class="card-body mt-2">
                         <table class="table datatable">
                             <thead>
@@ -22,9 +26,11 @@
                                     <th>Title</th>
                                     <th>Description</th>
                                     <th>status</th>
-                                    <th>Created By</th>
+                                    <th>Assign By</th>
                                     <th>Created At</th>
-                                    <th>Action</th>
+                                    @if (Auth::user()->role == 'admin')
+                                        <th>Action</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody>
@@ -54,18 +60,21 @@
                                         </td>
                                         <td>{{ $researchProject?->creator?->name }}</td>
                                         <td>{{ $researchProject->created_at->diffForHumans() }}</td>
-                                        <td>
-                                            <a href="{{ route('research-projects.edit', $researchProject->id) }}"
-                                                class="btn btn-sm btn-primary">
-                                                Edit</a>
-                                            <form action="{{ route('research-projects.destroy', $researchProject->id) }}"
-                                                method="POST">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger"
-                                                    onclick="return confirm('Are you sure you want to delete this item?')">Delete</button>
-                                            </form>
-                                        </td>
+                                        @if (Auth::user()->role == 'admin')
+                                            <td>
+                                                <a href="{{ route('research-projects.edit', $researchProject->id) }}"
+                                                    class="btn btn-sm btn-primary">
+                                                    Edit</a>
+                                                <form
+                                                    action="{{ route('research-projects.destroy', $researchProject->id) }}"
+                                                    method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger"
+                                                        onclick="return confirm('Are you sure you want to delete this item?')">Delete</button>
+                                                </form>
+                                            </td>
+                                        @endif
                                     </tr>
                                 @endforeach
                             </tbody>

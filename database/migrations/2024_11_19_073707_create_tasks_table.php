@@ -19,8 +19,8 @@ return new class extends Migration
             $table->unsignedInteger('category_id');
             $table->dateTime('due_date');
             $table->enum('status', ['pending', 'in_progress', 'completed'])->default('pending');
-            $table->tinyInteger('created_by');
-            $table->tinyInteger('updated_by');
+            $table->tinyInteger('created_by')->nullable();
+            $table->tinyInteger('updated_by')->nullable();
             $table->timestamps();
         });
     }

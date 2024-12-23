@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class Student
+class User
 {
     /**
      * Handle an incoming request.
@@ -16,12 +16,10 @@ class Student
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // Check if the user is authenticated and has an 'student' role
-        if (Auth::check() && Auth::user()->role === 'student') {
-            return $next($request);
+        if (!Auth::check()) {
+            return redirect('/')->with('error', 'Unauthorized access.');
         }
 
-        // Redirect to home or show a 403 error if the user is not an student
-        return redirect('/')->with('error', 'Unauthorized access.');
+        return $next($request);
     }
 }

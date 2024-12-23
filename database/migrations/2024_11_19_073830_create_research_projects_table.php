@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('title');
             $table->text('description');
             $table->enum('status', ['proposed', 'in_progress', 'on_hold', 'completed', 'cancelled'])->default('proposed');
-            $table->tinyInteger('created_by');
-            $table->tinyInteger('updated_by');
+            $table->tinyInteger('created_by')->nullable();
+            $table->tinyInteger('updated_by')->nullable();
             $table->timestamps();
         });
     }

@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
             AcademicRoleSeeder::class,
             ContactSeeder::class,
             DocumentSeeder::class,
-            NetworkingLogSeeder::class,
+            MeetingLogSeeder::class,
             ResearchProjectSeeder::class,
             PerformanceSeeder::class,
             CustomNoteSeeder::class

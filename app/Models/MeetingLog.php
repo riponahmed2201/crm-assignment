@@ -4,15 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class NetworkingLog extends Model
+class MeetingLog extends Model
 {
-    protected $table = 'networking_logs';
+    protected $table = 'meeting_logs';
     protected $primaryKey = 'id';
-    protected $fillable = ['user_id', 'contact_id', 'meeting_date', 'notes', 'follow_up_date', 'created_by', 'updated_by', 'created_at', 'updated_at'];
+    protected $fillable = ['user_id', 'contact_id', 'meeting_date', 'file', 'notes', 'follow_up_date', 'created_by', 'updated_by', 'created_at', 'updated_at'];
 
     /**
      * Define the relationship with the User model
-     * A NetworkingLog belongs to a User
+     * A MeetingLog belongs to a User
      */
     public function user()
     {
@@ -21,7 +21,7 @@ class NetworkingLog extends Model
 
     /**
      * Define the relationship with the Contact model
-     * A NetworkingLog belongs to a User
+     * A MeetingLog belongs to a User
      */
     public function contact()
     {

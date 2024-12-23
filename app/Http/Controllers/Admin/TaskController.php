@@ -19,7 +19,13 @@ class TaskController extends Controller
     {
         $statuses = Task::STATUS_ARR;
 
-        $tasks = Task::with('category:id,category_name', 'user:id,name', 'creator:id,name')->latest()->get();
+        $taskQuery = Task::with('category:id,category_name', 'user:id,name', 'creator:id,name')->latest();
+
+        if (Auth::user()->role === 'student') {
+            $taskQuery->where('user_id', Auth::id());
+        }
+
+        $tasks = $taskQuery->get();
 
         return view('admin.tasks.index', compact('tasks', 'statuses'));
     }

@@ -17,9 +17,15 @@ class FinancialTrackerController extends Controller
      */
     public function index()
     {
-        $financialTrackers = FinancialTracker::with('user', 'category', 'creator:id,name')->latest()->get();
-
         $statuses = FinancialTracker::STATUS_ARR;
+
+        $financialTrackerQuery = FinancialTracker::with('user', 'category', 'creator:id,name')->latest();
+
+        if (Auth::user()->role === 'student') {
+            $financialTrackerQuery->where('user_id', Auth::id());
+        }
+
+        $financialTrackers = $financialTrackerQuery->get();
 
         return view('admin.financial-trackers.index', compact('statuses', 'financialTrackers'));
     }
@@ -43,32 +49,40 @@ class FinancialTrackerController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'user_name' => 'required|integer|exists:users,id',
+            'user_name' => 'nullable|integer|exists:users,id',
             'category' => 'required|integer|exists:financial_categories,id',
             'title' => 'required|string|max:255',
             'amount' => 'required',
             'due_date' => 'required|max:20',
-            'status' => 'required|string|in:pending,received'
+            'status' => 'nullable|string|in:pending,received'
         ]);
+
+        $input = [
+            'category_id' => $request->category,
+            'title' => $request->title,
+            'amount' => $request->amount,
+            'due_date' => $request->due_date,
+            'created_by' => Auth::id(),
+            'created_at' => now(),
+        ];
+
+        if (Auth::user()->role === 'student') {
+            $input['status'] = 'pending';
+            $input['user_id'] = Auth::id();
+        } else {
+            $input['status'] = $request->status;
+            $input['user_id'] = $request->user_name;
+        }
 
         try {
 
-            FinancialTracker::create([
-                'user_id' => $request->user_name,
-                'category_id' => $request->category,
-                'title' => $request->title,
-                'amount' => $request->amount,
-                'due_date' => $request->due_date,
-                'status' => $request->status,
-                'description' => $request->description,
-                'created_by' => Auth::id(),
-                'created_at' => now(),
-            ]);
+            FinancialTracker::create($input);
 
             notify()->success("Financial tracker created successfully", "Success");
 
             return to_route('financial-trackers.index');
         } catch (Exception $exception) {
+            dd($exception);
             notify()->success("Something error found! Please try again", "Error");
             return back();
         }
@@ -106,22 +120,30 @@ class FinancialTrackerController extends Controller
             'title' => 'required|string|max:255',
             'amount' => 'required',
             'due_date' => 'required|max:20',
-            'status' => 'required|string|in:pending,received'
+            'status' => 'nullable|string|in:pending,received'
         ]);
+
+        $input = [
+            'user_id' => $request->user_name,
+            'category_id' => $request->category,
+            'title' => $request->title,
+            'amount' => $request->amount,
+            'due_date' => $request->due_date,
+            'updated_by' => Auth::id(),
+            'updated_at' => now(),
+        ];
+
+        if (Auth::user()->role === 'student') {
+            $input['status'] = 'pending';
+            $input['user_id'] = Auth::id();
+        } else {
+            $input['status'] = $request->status;
+            $input['user_id'] = $request->user_name;
+        }
 
         try {
 
-            $financialTracker->update([
-                'user_id' => $request->user_name,
-                'category_id' => $request->category,
-                'title' => $request->title,
-                'amount' => $request->amount,
-                'due_date' => $request->due_date,
-                'status' => $request->status,
-                'description' => $request->description,
-                'updated_by' => Auth::id(),
-                'updated_at' => now(),
-            ]);
+            $financialTracker->update($input);
 
             notify()->success("Financial tracker updated successfully", "Success");
 

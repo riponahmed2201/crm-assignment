@@ -51,10 +51,10 @@
         </li>
 
         <li class="nav-item">
-            <a class="nav-link {{ Request::is('networking-logs') ? '' : 'collapsed' }}"
-                href="{{ route('networking-logs.index') }}">
+            <a class="nav-link {{ Request::is('meeting-logs') ? '' : 'collapsed' }}"
+                href="{{ route('meeting-logs.index') }}">
                 <i class="bi bi-menu-button-wide"></i>
-                <span>Networking Logs</span>
+                <span>Meeting Logs</span>
             </a>
         </li>
 

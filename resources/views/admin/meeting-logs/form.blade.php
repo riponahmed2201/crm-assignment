@@ -1,25 +1,25 @@
 @extends('master')
 
-@section('title', 'Networking logs')
+@section('title', 'Meeting logs')
 
-@isset($networkingLog)
-    @section('page_title', 'Edit networking logs')
+@isset($meetingLog)
+    @section('page_title', 'Edit meeting logs')
 @else
-@section('page_title', 'Add networking logs')
+@section('page_title', 'Add meeting logs')
 @endisset
 
 @section('content')
 <section class="section">
     <div class="card">
         <div class="card-header">
-            <a href="{{ route('networking-logs.index') }}" class="btn btn-sm btn-danger float-end"> <i class="bi-list"></i>
+            <a href="{{ route('meeting-logs.index') }}" class="btn btn-sm btn-danger float-end"> <i class="bi-list"></i>
                 Back to
                 list</a>
         </div>
         <form class="row g-3 p-4" method="POST"
-            action="{{ isset($networkingLog) ? route('networking-logs.update', $networkingLog->id) : route('networking-logs.store') }}">
+            action="{{ isset($meetingLog) ? route('meeting-logs.update', $meetingLog->id) : route('meeting-logs.store') }}">
             @csrf
-            @isset($networkingLog)
+            @isset($meetingLog)
                 @method('PUT')
             @endisset
             <div class="card-body">
@@ -32,7 +32,7 @@
                                 <option selected>Select User</option>
                                 @foreach ($users as $user)
                                     <option
-                                        @isset($networkingLog) {{ $user->id == $networkingLog->user_id ? 'selected' : '' }} @endisset
+                                        @isset($meetingLog) {{ $user->id == $meetingLog->user_id ? 'selected' : '' }} @endisset
                                         value="{{ $user->id }}">{{ $user->name }}
                                     </option>
                                 @endforeach
@@ -50,7 +50,7 @@
                                 <option selected>Select contact</option>
                                 @foreach ($contacts as $contact)
                                     <option
-                                        @isset($networkingLog) {{ $contact->id == $networkingLog->contact_id ? 'selected' : '' }} @endisset
+                                        @isset($meetingLog) {{ $contact->id == $meetingLog->contact_id ? 'selected' : '' }} @endisset
                                         value="{{ $contact->id }}">{{ $contact->name }}
                                     </option>
                                 @endforeach
@@ -66,7 +66,7 @@
                             <label for="meeting_date" class="form-label">Meeting date <span class="text-danger">*</span>
                             </label>
                             <input type="date" class="form-control" name="meeting_date" placeholder="Enter due date"
-                                value="{{ isset($networkingLog) ? $networkingLog->meeting_date : old('meeting_date') }}">
+                                value="{{ isset($meetingLog) ? $meetingLog->meeting_date : old('meeting_date') }}">
                             @error('meeting_date')
                                 <span class="text-danger mt-2">{{ $message }}</span>
                             @enderror
@@ -80,8 +80,18 @@
                             </label>
                             <input type="date" class="form-control" name="follow_up_date"
                                 placeholder="Enter due date"
-                                value="{{ isset($networkingLog) ? $networkingLog->follow_up_date : old('follow_up_date') }}">
+                                value="{{ isset($meetingLog) ? $meetingLog->follow_up_date : old('follow_up_date') }}">
                             @error('follow_up_date')
+                                <span class="text-danger mt-2">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label for="file" class="form-label">Upload File </label>
+                            <input type="file" class="form-control" name="file">
+                            @error('file')
                                 <span class="text-danger mt-2">{{ $message }}</span>
                             @enderror
                         </div>
@@ -90,7 +100,7 @@
                     <div class="col-md-12">
                         <div class="form-group mb-3">
                             <label for="notes" class="form-label">Notes <span class="text-danger">*</span></label>
-                            <textarea class="form-control" name="notes" placeholder="Enter notes">{{ isset($networkingLog) ? $networkingLog->notes : old('notes') }}</textarea>
+                            <textarea class="form-control" name="notes" placeholder="Enter notes">{{ isset($meetingLog) ? $meetingLog->notes : old('notes') }}</textarea>
                             @error('notes')
                                 <span class="text-danger mt-2">{{ $message }}</span>
                             @enderror

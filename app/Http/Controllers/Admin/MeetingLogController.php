@@ -4,22 +4,29 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Contact;
-use App\Models\NetworkingLog;
+use App\Models\MeetingLog;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
-class NetworkingLogController extends Controller
+class MeetingLogController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $networkingLogs = NetworkingLog::with('user', 'contact', 'creator:id,name')->latest()->get();
+        $meetingLogsQuery = MeetingLog::with(['user', 'contact', 'creator:id,name'])->latest();
 
-        return view('admin.networking-logs.index', compact('networkingLogs'));
+        if (Auth::user()->role === 'student') {
+            $meetingLogsQuery->where('user_id', Auth::id());
+        }
+
+        $meetingLogs = $meetingLogsQuery->get();
+
+        return view('admin.meeting-logs.index', compact('meetingLogs'));
     }
 
     /**
@@ -30,7 +37,7 @@ class NetworkingLogController extends Controller
         $users = User::latest()->get();
         $contacts = Contact::latest()->get();
 
-        return view('admin.networking-logs.form', compact('users', 'contacts'));
+        return view('admin.meeting-logs.form', compact('users', 'contacts'));
     }
 
     /**
@@ -46,21 +53,31 @@ class NetworkingLogController extends Controller
             'notes' => 'required|string',
         ]);
 
+        $input = [
+            'user_id' => $request->user,
+            'contact_id' => $request->contact,
+            'meeting_date' => $request->meeting_date,
+            'follow_up_date' => $request->follow_up_date,
+            'notes' => $request->notes,
+            'created_by' => Auth::id(),
+            'created_at' => now(),
+        ];
+
+        $filePath = $request->file('file');
+
+        if ($filePath) {
+            $filePathName = md5(Str::random(30) . time() . '_' . $request->file('file')) . '.' . $request->file('file')->getClientOriginalExtension();
+            $request->file('file')->move('uploads/meeting-logs/', $filePathName);
+            $input['file'] = $filePathName;
+        }
+
         try {
 
-            NetworkingLog::create([
-                'user_id' => $request->user,
-                'contact_id' => $request->contact,
-                'meeting_date' => $request->meeting_date,
-                'follow_up_date' => $request->follow_up_date,
-                'notes' => $request->notes,
-                'created_by' => Auth::id(),
-                'created_at' => now(),
-            ]);
+            MeetingLog::create($input);
 
-            notify()->success("Networking log created successfully", "Success");
+            notify()->success("Meeting log created successfully", "Success");
 
-            return to_route('networking-logs.index');
+            return to_route('meeting-logs.index');
         } catch (Exception $exception) {
             notify()->success("Something error found! Please try again", "Error");
             return back();
@@ -70,7 +87,7 @@ class NetworkingLogController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(NetworkingLog $networkingLog)
+    public function show(MeetingLog $MeetingLog)
     {
         //
     }
@@ -78,18 +95,18 @@ class NetworkingLogController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(NetworkingLog $networkingLog)
+    public function edit(MeetingLog $meetingLog)
     {
         $users = User::latest()->get();
         $contacts = Contact::latest()->get();
 
-        return view('admin.networking-logs.form', compact('users', 'contacts', 'networkingLog'));
+        return view('admin.meeting-logs.form', compact('users', 'contacts', 'meetingLog'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, NetworkingLog $networkingLog)
+    public function update(Request $request, MeetingLog $meetingLog)
     {
         $request->validate([
             'user' => 'required|integer|exists:users,id',
@@ -101,7 +118,7 @@ class NetworkingLogController extends Controller
 
         try {
 
-            $networkingLog->update([
+            $meetingLog->update([
                 'user_id' => $request->user,
                 'contact_id' => $request->contact,
                 'meeting_date' => $request->meeting_date,
@@ -111,7 +128,7 @@ class NetworkingLogController extends Controller
                 'updated_at' => now(),
             ]);
 
-            notify()->success("Networking log updated successfully", "Success");
+            notify()->success("Meeting log updated successfully", "Success");
 
             return back();
         } catch (Exception $exception) {
@@ -123,11 +140,11 @@ class NetworkingLogController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(NetworkingLog $networkingLog)
+    public function destroy(MeetingLog $meetingLog)
     {
         try {
-            $networkingLog->delete();
-            notify()->success('Networking log deleted successfull.', 'Success');
+            $meetingLog->delete();
+            notify()->success('Meeting log deleted successfull.', 'Success');
             return back();
         } catch (Exception $exception) {
             notify()->success("Something error found! Please try again", "Error");

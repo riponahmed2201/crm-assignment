@@ -1,7 +1,7 @@
 @extends('master')
 
-@section('title', 'Tasks')
-@section('page_title', 'Tasks')
+@section('title', 'Meeting logs')
+@section('page_title', 'Meeting logs')
 
 @section('content')
     <section class="section">
@@ -11,7 +11,7 @@
 
                     @if (Auth::user()->role == 'admin')
                         <div class="card-header">
-                            <a href="{{ route('tasks.create') }}" class="btn btn-sm btn-primary float-end"> <i
+                            <a href="{{ route('meeting-logs.create') }}" class="btn btn-sm btn-primary float-end"> <i
                                     class="bi-file-earmark-plus-fill"></i> Add New</a>
                         </div>
                     @endif
@@ -22,10 +22,11 @@
                                 <tr>
                                     <th>#</th>
                                     <th>User</th>
-                                    <th>Category</th>
-                                    <th>Title</th>
-                                    <th>Due Date</th>
-                                    <th>Status</th>
+                                    <th>Contact</th>
+                                    <th>Meeting Date</th>
+                                    <th>Follow Date</th>
+                                    <th>File</th>
+                                    <th>notes</th>
                                     <th>Created By</th>
                                     <th>Created At</th>
                                     @if (Auth::user()->role == 'admin')
@@ -34,31 +35,27 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($tasks as $task)
+                                @foreach ($meetingLogs as $meetingLog)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $task?->user?->name }}</td>
-                                        <td>{{ $task?->category?->category_name }}</td>
-                                        <td>{{ $task->title }}</td>
-                                        <td>{{ $task->due_date }}</td>
+                                        <td>{{ $meetingLog?->user?->name }}</td>
+                                        <td>{{ $meetingLog?->contact?->name }}</td>
+                                        <td>{{ $meetingLog->meeting_date }}</td>
+                                        <td>{{ $meetingLog->follow_up_date }}</td>
                                         <td>
-                                            @if ($task->status == 'pending')
-                                                <span class="badge bg-warning">{{ $statuses[$task->status] }}</span>
-                                            @elseif($task->status == 'in_progress')
-                                                <span class="badge bg-info">{{ $statuses[$task->status] }}</span>
-                                            @else
-                                                <span class="badge bg-success">{{ $statuses[$task->status] }}</span>
-                                            @endif
+                                            <a target="_blank"
+                                                href="{{ asset('uploads/meeting-logs/' . $meetingLog->file) }}">{{ $meetingLog->file }}</a>
                                         </td>
-                                        <td>{{ $task?->creator?->name }}</td>
-                                        <td>{{ $task->created_at->diffForHumans() }}</td>
-
+                                        <td>{{ $meetingLog->notes }}</td>
+                                        <td>{{ $meetingLog?->creator?->name }}</td>
+                                        <td>{{ $meetingLog->created_at->diffForHumans() }}</td>
                                         @if (Auth::user()->role == 'admin')
                                             <td>
-                                                <a href="{{ route('tasks.edit', $task->id) }}"
+                                                <a href="{{ route('meeting-logs.edit', $meetingLog->id) }}"
                                                     class="btn btn-sm btn-primary">
                                                     Edit</a>
-                                                <form action="{{ route('tasks.destroy', $task->id) }}" method="POST">
+                                                <form action="{{ route('meeting-logs.destroy', $meetingLog->id) }}"
+                                                    method="POST">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger"

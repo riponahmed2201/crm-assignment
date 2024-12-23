@@ -17,7 +17,13 @@ class PerformanceController extends Controller
      */
     public function index()
     {
-        $performances = Performance::with('user', 'task', 'creator:id,name')->latest()->get();
+        $performanceQuery = Performance::with('user', 'task', 'creator:id,name')->latest();
+
+        if (Auth::user()->role === 'student') {
+            $performanceQuery->where('user_id', Auth::id());
+        }
+
+        $performances = $performanceQuery->get();
 
         return view('admin.performances.index', compact('performances'));
     }

@@ -11,15 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('networking_logs', function (Blueprint $table) {
+        Schema::create('meeting_logs', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('contact_id');
             $table->dateTime('meeting_date');
+            $table->string('file');
             $table->text('notes');
             $table->dateTime('follow_up_date');
-            $table->tinyInteger('created_by');
-            $table->tinyInteger('updated_by');
+            $table->tinyInteger('created_by')->nullable();
+            $table->tinyInteger('updated_by')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('networking_logs');
+        Schema::dropIfExists('meeting_logs');
     }
 };

@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('title');
             $table->dateTime('event_date');
             $table->boolean('reminder')->default(false);
-            $table->tinyInteger('created_by');
-            $table->tinyInteger('updated_by');
+            $table->tinyInteger('created_by')->nullable();
+            $table->tinyInteger('updated_by')->nullable();
             $table->timestamps();
         });
     }

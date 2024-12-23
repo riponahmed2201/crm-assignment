@@ -26,23 +26,26 @@
             <div class="card-body">
                 <div class="row">
 
-                    <div class="col-md-6">
-                        <div class="form-group mb-3">
-                            <label for="user_name" class="form-label">User <span class="text-danger">*</span></label>
-                            <select id="user_name" class="form-select" name="user_name">
-                                <option selected>Select User</option>
-                                @foreach ($users as $user)
-                                    <option
-                                        @isset($financialTracker) {{ $user->id == $financialTracker->user_id ? 'selected' : '' }} @endisset
-                                        value="{{ $user->id }}">{{ $user->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            @error('user_name')
-                                <span class="text-danger mt-2">{{ $message }}</span>
-                            @enderror
+                    @if (Auth::user()->role === 'admin')
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <label for="user_name" class="form-label">User <span
+                                        class="text-danger">*</span></label>
+                                <select id="user_name" class="form-select" name="user_name">
+                                    <option selected>Select User</option>
+                                    @foreach ($users as $user)
+                                        <option
+                                            @isset($financialTracker) {{ $user->id == $financialTracker->user_id ? 'selected' : '' }} @endisset
+                                            value="{{ $user->id }}">{{ $user->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('user_name')
+                                    <span class="text-danger mt-2">{{ $message }}</span>
+                                @enderror
+                            </div>
                         </div>
-                    </div>
+                    @endif
 
                     <div class="col-md-6">
                         <div class="form-group mb-3">
@@ -98,27 +101,29 @@
                         </div>
                     </div>
 
-                    <div class="col-md-6">
-                        <div class="form-group mb-3">
+                    @if (Auth::user()->role === 'admin')
+                        <div class="col-md-6">
                             <div class="form-group mb-3">
-                                <label for="status" class="form-label">Status <span
-                                        class="text-danger">*</span></label>
-                                <select id="status" class="form-select" name="status">
-                                    <option selected>Select Status</option>
+                                <div class="form-group mb-3">
+                                    <label for="status" class="form-label">Status <span
+                                            class="text-danger">*</span></label>
+                                    <select id="status" class="form-select" name="status">
+                                        <option selected>Select Status</option>
 
-                                    @foreach ($statuses as $key => $status)
-                                        <option
-                                            @isset($financialTracker) {{ $financialTracker->status == $key ? 'selected' : '' }} @endisset
-                                            value="{{ $key }}">{{ $status }}</option>
-                                    @endforeach
+                                        @foreach ($statuses as $key => $status)
+                                            <option
+                                                @isset($financialTracker) {{ $financialTracker->status == $key ? 'selected' : '' }} @endisset
+                                                value="{{ $key }}">{{ $status }}</option>
+                                        @endforeach
 
-                                </select>
-                                @error('status')
-                                    <span class="text-danger mt-2">{{ $message }}</span>
-                                @enderror
+                                    </select>
+                                    @error('status')
+                                        <span class="text-danger mt-2">{{ $message }}</span>
+                                    @enderror
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    @endif
                 </div>
 
                 <div class="text-center mt-4">

@@ -17,8 +17,15 @@ class ResearchProjectController extends Controller
      */
     public function index()
     {
-        $researchProjects = ResearchProject::with('user', 'task', 'creator:id,name')->latest()->get();
         $statuses = ResearchProject::STATUS_ARR;
+
+        $researchProjectQuery = ResearchProject::with('user', 'task', 'creator:id,name')->latest();
+
+        if (Auth::user()->role === 'student') {
+            $researchProjectQuery->where('user_id', Auth::id());
+        }
+
+        $researchProjects = $researchProjectQuery->get();
 
         return view('admin.research-projects.index', compact('researchProjects', 'statuses'));
     }

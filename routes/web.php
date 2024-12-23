@@ -9,7 +9,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DocumentController;
 use App\Http\Controllers\Admin\FinancialCategoryController;
 use App\Http\Controllers\Admin\FinancialTrackerController;
-use App\Http\Controllers\Admin\NetworkingLogController;
+use App\Http\Controllers\Admin\MeetingLogController;
 use App\Http\Controllers\Admin\PerformanceController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\ResearchProjectController;
@@ -30,17 +30,9 @@ Route::group(['middleware' => ['admin']], function () {
     Route::resources([
         'users' => UserController::class,
         'academic-roles' => AcademicRoleController::class,
-        'calendar-events' => CalendarEventController::class,
         'contacts' => ContactController::class,
-        'custom-notes' => CustomNoteController::class,
-        'documents' => DocumentController::class,
         'financial-categories' => FinancialCategoryController::class,
-        'financial-trackers' => FinancialTrackerController::class,
-        'networking-logs' => NetworkingLogController::class,
-        'performances' => PerformanceController::class,
-        'research-projects' => ResearchProjectController::class,
-        'task-categories' => TaskCategoryController::class,
-        'tasks' => TaskController::class,
+        'task-categories' => TaskCategoryController::class
     ]);
 });
 
@@ -50,9 +42,21 @@ Route::group(['middleware' => 'student'], function () {
 });
 
 //This Route access both admin and student
-Route::group(['middleware' => ['admin', 'student']], function () {
+Route::group(['middleware' => ['user']], function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('profile', [ProfileController::class, 'index'])->name('profile');
     Route::put('profile/update', [ProfileController::class, 'update'])->name('profile.update');
     Route::put('password/update', [AuthController::class, 'updatePassword'])->name('password.update');
+
+    //Resources routes
+    Route::resources([
+        'calendar-events' => CalendarEventController::class,
+        'custom-notes' => CustomNoteController::class,
+        'documents' => DocumentController::class,
+        'financial-trackers' => FinancialTrackerController::class,
+        'meeting-logs' => MeetingLogController::class,
+        'performances' => PerformanceController::class,
+        'research-projects' => ResearchProjectController::class,
+        'tasks' => TaskController::class,
+    ]);
 });

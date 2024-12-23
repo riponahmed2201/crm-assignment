@@ -16,7 +16,13 @@ class CustomNoteController extends Controller
      */
     public function index()
     {
-        $customNotes = CustomNote::with('user', 'creator:id,name')->latest()->get();
+        $customNoteQuery = CustomNote::with('user', 'creator:id,name')->latest();
+
+        if (Auth::user()->role === 'student') {
+            $customNoteQuery->where('user_id', Auth::id());
+        }
+
+        $customNotes = $customNoteQuery->get();
 
         return view('admin.custom-notes.index', compact('customNotes'));
     }

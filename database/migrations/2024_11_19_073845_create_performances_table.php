@@ -17,8 +17,8 @@ return new class extends Migration
             $table->unsignedBigInteger('task_id');
             $table->string('grade');
             $table->string('completion_percentage');
-            $table->tinyInteger('created_by');
-            $table->tinyInteger('updated_by');
+            $table->tinyInteger('created_by')->nullable();
+            $table->tinyInteger('updated_by')->nullable();
             $table->timestamps();
         });
     }

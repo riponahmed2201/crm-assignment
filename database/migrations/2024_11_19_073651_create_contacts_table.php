@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('email');
             $table->string('phone');
             $table->text('notes');
-            $table->tinyInteger('created_by');
-            $table->tinyInteger('updated_by');
+            $table->tinyInteger('created_by')->nullable();
+            $table->tinyInteger('updated_by')->nullable();
             $table->timestamps();
         });
     }
