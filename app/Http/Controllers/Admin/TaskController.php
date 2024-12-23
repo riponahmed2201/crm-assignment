@@ -8,6 +8,7 @@ use App\Models\TaskCategory;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
@@ -18,7 +19,7 @@ class TaskController extends Controller
     {
         $statuses = Task::STATUS_ARR;
 
-        $tasks = Task::with('category:id,category_name', 'user:id,name')->latest()->get();
+        $tasks = Task::with('category:id,category_name', 'user:id,name', 'creator:id,name')->latest()->get();
 
         return view('admin.tasks.index', compact('tasks', 'statuses'));
     }
@@ -58,7 +59,9 @@ class TaskController extends Controller
                 'title' => $request->title,
                 'due_date' => $request->due_date,
                 'status' => $request->status,
-                'description' => $request->description
+                'description' => $request->description,
+                'created_by' => Auth::id(),
+                'created_at' => now(),
             ]);
 
             notify()->success("Task created successfully", "Success");
@@ -112,7 +115,9 @@ class TaskController extends Controller
                 'title' => $request->title,
                 'due_date' => $request->due_date,
                 'status' => $request->status,
-                'description' => $request->description
+                'description' => $request->description,
+                'updated_by' => Auth::id(),
+                'updated_at' => now(),
             ]);
 
             notify()->success("Task updated successfully", "Success");

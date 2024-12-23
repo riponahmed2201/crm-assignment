@@ -8,7 +8,7 @@ class CalendarEvent extends Model
 {
     protected $table = 'calendar_events';
     protected $primaryKey = 'id';
-    protected $fillable = ['user_id', 'task_id', 'title', 'event_date', 'reminder'];
+    protected $fillable = ['user_id', 'task_id', 'title', 'event_date', 'reminder', 'created_by', 'updated_by', 'created_at', 'updated_at'];
 
     /**
      * Define the relationship with the User model
@@ -26,5 +26,10 @@ class CalendarEvent extends Model
     public function task()
     {
         return $this->belongsTo(Task::class, 'task_id', 'id');
+    }
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id');
     }
 }

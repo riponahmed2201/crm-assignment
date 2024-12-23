@@ -8,6 +8,7 @@ use App\Models\Contact;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ContactController extends Controller
 {
@@ -16,7 +17,7 @@ class ContactController extends Controller
      */
     public function index()
     {
-        $contacts = Contact::with('user', 'academicRole')->latest()->get();
+        $contacts = Contact::with('user', 'academicRole', 'creator:id,name')->latest()->get();
 
         return view('admin.contacts.index', compact('contacts'));
     }
@@ -56,7 +57,9 @@ class ContactController extends Controller
                 'organization' => $request->organization,
                 'email' => $request->email,
                 'phone' => $request->phone,
-                'notes' => $request->notes
+                'notes' => $request->notes,
+                'created_by' => Auth::id(),
+                'created_at' => now(),
             ]);
 
             notify()->success("Contact created successfully", "Success");
@@ -111,7 +114,9 @@ class ContactController extends Controller
                 'organization' => $request->organization,
                 'email' => $request->email,
                 'phone' => $request->phone,
-                'notes' => $request->notes
+                'notes' => $request->notes,
+                'updated_by' => Auth::id(),
+                'updated_at' => now(),
             ]);
 
             notify()->success("Contact updated successfully", "Success");

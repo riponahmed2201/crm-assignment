@@ -7,6 +7,7 @@ use App\Models\Document;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class DocumentController extends Controller
@@ -16,7 +17,7 @@ class DocumentController extends Controller
      */
     public function index()
     {
-        $documents = Document::with('user')->latest()->get();
+        $documents = Document::with('user', 'creator:id,name')->latest()->get();
 
         return view('admin.documents.index', compact('documents'));
     }
@@ -47,7 +48,9 @@ class DocumentController extends Controller
             'user_id' => $request->user,
             'title' => $request->title,
             'file_path' => $request->file_path,
-            'tags' => $request->tags
+            'tags' => $request->tags,
+            'created_by' => Auth::id(),
+            'created_at' => now(),
         ];
 
         $filePath = $request->file('file_path');
@@ -105,7 +108,9 @@ class DocumentController extends Controller
             'user_id' => $request->user,
             'title' => $request->title,
             'file_path' => $request->file_path,
-            'tags' => $request->tags
+            'tags' => $request->tags,
+            'updated_by' => Auth::id(),
+            'updated_at' => now(),
         ];
 
         $filePath = $request->file('file_path');
@@ -131,8 +136,6 @@ class DocumentController extends Controller
 
             return to_route('documents.index');
         } catch (Exception $exception) {
-
-            dd($exception);
             notify()->success("Something error found! Please try again", "Error");
             return back();
         }

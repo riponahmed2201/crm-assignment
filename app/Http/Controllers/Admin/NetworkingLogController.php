@@ -8,6 +8,7 @@ use App\Models\NetworkingLog;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class NetworkingLogController extends Controller
 {
@@ -16,7 +17,7 @@ class NetworkingLogController extends Controller
      */
     public function index()
     {
-        $networkingLogs = NetworkingLog::with('user', 'contact')->latest()->get();
+        $networkingLogs = NetworkingLog::with('user', 'contact', 'creator:id,name')->latest()->get();
 
         return view('admin.networking-logs.index', compact('networkingLogs'));
     }
@@ -52,7 +53,9 @@ class NetworkingLogController extends Controller
                 'contact_id' => $request->contact,
                 'meeting_date' => $request->meeting_date,
                 'follow_up_date' => $request->follow_up_date,
-                'notes' => $request->notes
+                'notes' => $request->notes,
+                'created_by' => Auth::id(),
+                'created_at' => now(),
             ]);
 
             notify()->success("Networking log created successfully", "Success");
@@ -103,7 +106,9 @@ class NetworkingLogController extends Controller
                 'contact_id' => $request->contact,
                 'meeting_date' => $request->meeting_date,
                 'follow_up_date' => $request->follow_up_date,
-                'notes' => $request->notes
+                'notes' => $request->notes,
+                'updated_by' => Auth::id(),
+                'updated_at' => now(),
             ]);
 
             notify()->success("Networking log updated successfully", "Success");

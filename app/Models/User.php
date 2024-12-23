@@ -48,4 +48,7 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    const STUDENT_ROLE = 'student';
+    const ADMIN_ROLE = 'admin';
 }

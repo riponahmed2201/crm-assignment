@@ -8,7 +8,7 @@ class Contact extends Model
 {
     protected $table = 'contacts';
     protected $primaryKey = 'id';
-    protected $fillable = ['user_id', 'academic_role_id', 'name', 'organization', 'email', 'phone', 'notes'];
+    protected $fillable = ['user_id', 'academic_role_id', 'name', 'organization', 'email', 'phone', 'notes', 'created_by', 'updated_by', 'created_at', 'updated_at'];
 
     /**
      * Define the relationship with the User model
@@ -26,5 +26,10 @@ class Contact extends Model
     public function academicRole()
     {
         return $this->belongsTo(AcademicRole::class, 'academic_role_id', 'id');
+    }
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id');
     }
 }

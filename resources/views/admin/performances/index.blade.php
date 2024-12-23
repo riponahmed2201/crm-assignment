@@ -21,6 +21,7 @@
                                     <th>Task</th>
                                     <th>Grade</th>
                                     <th>Completion Percentage</th>
+                                    <th>Created By</th>
                                     <th>Created At</th>
                                     <th>Action</th>
                                 </tr>
@@ -33,14 +34,19 @@
                                         <td>{{ $performance?->task?->title }}</td>
                                         <td>{{ $performance?->grade }}</td>
                                         <td>{{ $performance->completion_percentage }}</td>
+                                        <td>{{ $performance?->creator?->name }}</td>
                                         <td>{{ $performance->created_at->diffForHumans() }}</td>
                                         <td>
                                             <a href="{{ route('performances.edit', $performance->id) }}"
                                                 class="btn btn-sm btn-primary">
                                                 Edit</a>
-                                            <a href="{{ route('performances.destroy', $performance->id) }}"
-                                                class="btn btn-sm btn-danger">
-                                                Delete</a>
+                                            <form action="{{ route('performances.destroy', $performance->id) }}"
+                                                method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger"
+                                                    onclick="return confirm('Are you sure you want to delete this item?')">Delete</button>
+                                            </form>
                                         </td>
                                     </tr>
                                 @endforeach

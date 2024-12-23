@@ -26,14 +26,21 @@ class AuthController extends Controller
             'password' => 'required|string|min:6',
         ]);
 
+        // dd(Auth::attempt($validated, $request->boolean('remember')));
+
         try {
             // Attempt login using Laravel's built-in authentication
             if (Auth::attempt($validated, $request->boolean('remember'))) {
                 // Regenerate session to prevent fixation attacks
                 $request->session()->regenerate();
 
-                // Redirect to the dashboard
-                return redirect()->intended(route('dashboard'))->with('success', 'Login successful');
+                if (Auth::user()->role == 'admin') {
+                    // Redirect to the admin dashboard
+                    return redirect()->intended(route('dashboard'))->with('success', 'Login successful');
+                } else {
+                    // Redirect to the student dashboard
+                    return redirect()->intended(route('student.dashboard'))->with('success', 'Login successful');
+                }
             }
 
             return back()->withErrors(['email' => 'The provided credentials do not match our records.']);

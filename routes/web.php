@@ -23,12 +23,8 @@ Route::get('/', [AuthController::class, 'showLoginForm']);
 Route::post('login', [AuthController::class, 'login'])->name('login');
 
 //Admin Route Here
-Route::group(['middleware' => 'admin'], function () {
-    Route::get('dashboard', DashboardController::class)->name('dashboard');
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-    Route::get('profile', [ProfileController::class, 'index'])->name('profile');
-    Route::put('profile/update', [ProfileController::class, 'update'])->name('profile.update');
-    Route::put('password/update', [AuthController::class, 'updatePassword'])->name('password.update');
+Route::group(['middleware' => ['admin']], function () {
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     //Resources routes
     Route::resources([
@@ -46,4 +42,17 @@ Route::group(['middleware' => 'admin'], function () {
         'task-categories' => TaskCategoryController::class,
         'tasks' => TaskController::class,
     ]);
+});
+
+//This Route access student
+Route::group(['middleware' => 'student'], function () {
+    Route::get('student-dashboard', [DashboardController::class, 'studentDashboard'])->name('student.dashboard');
+});
+
+//This Route access both admin and student
+Route::group(['middleware' => ['admin', 'student']], function () {
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::get('profile', [ProfileController::class, 'index'])->name('profile');
+    Route::put('profile/update', [ProfileController::class, 'update'])->name('profile.update');
+    Route::put('password/update', [AuthController::class, 'updatePassword'])->name('password.update');
 });

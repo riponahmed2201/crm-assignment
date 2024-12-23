@@ -8,7 +8,7 @@ class FinancialTracker extends Model
 {
     protected $table = 'financial_trackers';
     protected $primaryKey = 'id';
-    protected $fillable = ['user_id', 'category_id', 'title', 'amount', 'due_date', 'status'];
+    protected $fillable = ['user_id', 'category_id', 'title', 'amount', 'due_date', 'status', 'created_by', 'updated_by', 'created_at', 'updated_at'];
 
     // Static status constants
     const STATUS_PENDING = 'pending';
@@ -35,5 +35,10 @@ class FinancialTracker extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id');
     }
 }

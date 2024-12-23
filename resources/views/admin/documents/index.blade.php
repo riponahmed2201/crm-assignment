@@ -21,6 +21,7 @@
                                     <th>Title</th>
                                     <th>Tags</th>
                                     <th>File Path</th>
+                                    <th>Created By</th>
                                     <th>Created At</th>
                                     <th>Action</th>
                                 </tr>
@@ -36,14 +37,19 @@
                                             <a target="_blank"
                                                 href="{{ asset('uploads/documents/' . $document->file_path) }}">{{ $document->file_path }}</a>
                                         </td>
+                                        <td>{{ $document?->creator?->name }}</td>
                                         <td>{{ $document->created_at->diffForHumans() }}</td>
                                         <td>
                                             <a href="{{ route('documents.edit', $document->id) }}"
                                                 class="btn btn-sm btn-primary">
                                                 Edit</a>
-                                            <a href="{{ route('documents.destroy', $document->id) }}"
-                                                class="btn btn-sm btn-danger">
-                                                Delete</a>
+                                            <form action="{{ route('documents.destroy', $document->id) }}"
+                                                method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger"
+                                                    onclick="return confirm('Are you sure you want to delete this item?')">Delete</button>
+                                            </form>
                                         </td>
                                     </tr>
                                 @endforeach

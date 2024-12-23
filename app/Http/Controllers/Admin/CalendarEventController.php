@@ -8,6 +8,7 @@ use App\Models\Task;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CalendarEventController extends Controller
 {
@@ -16,7 +17,7 @@ class CalendarEventController extends Controller
      */
     public function index()
     {
-        $calendarEvents = CalendarEvent::with('user:id,name', 'task:id,title')->latest()->get();
+        $calendarEvents = CalendarEvent::with('user:id,name', 'task:id,title', 'creator:id,name')->latest()->get();
 
         return view('admin.calendar-events.index', compact('calendarEvents'));
     }
@@ -52,7 +53,9 @@ class CalendarEventController extends Controller
                 'task_id' => $request->task,
                 'title' => $request->title,
                 'event_date' => $request->event_date,
-                'reminder' => $request->reminder
+                'reminder' => $request->reminder,
+                'created_by' => Auth::id(),
+                'created_at' => now(),
             ]);
 
             notify()->success("Calendar event created successfully", "Success");
@@ -103,7 +106,9 @@ class CalendarEventController extends Controller
                 'task_id' => $request->task,
                 'title' => $request->title,
                 'event_date' => $request->event_date,
-                'reminder' => $request->reminder
+                'reminder' => $request->reminder,
+                'updated_by' => Auth::id(),
+                'updated_at' => now(),
             ]);
 
             notify()->success("Calendar event updated successfully", "Success");

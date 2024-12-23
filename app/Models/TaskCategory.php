@@ -8,7 +8,7 @@ class TaskCategory extends Model
 {
     protected $table = 'task_categories';
     protected $primaryKey = 'id';
-    protected $fillable = ['category_name', 'description'];
+    protected $fillable = ['category_name', 'description', 'created_by', 'updated_by', 'created_at', 'updated_at'];
 
 
     /**
@@ -18,5 +18,10 @@ class TaskCategory extends Model
     public function tasks()
     {
         return $this->hasMany(Task::class, 'category_id', 'id');
+    }
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id');
     }
 }

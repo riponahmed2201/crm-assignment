@@ -24,6 +24,8 @@ class TaskSeeder extends Seeder
                 'category_id' => 1, // Assuming category 1 exists in the task_categories table
                 'due_date' => $now->addDays(3),
                 'status' => 'pending',
+                'created_by' => 1,
+                'updated_by' => 1,
                 'created_at' => $now,
                 'updated_at' => $now,
             ],
@@ -34,6 +36,8 @@ class TaskSeeder extends Seeder
                 'category_id' => 4, // Assuming category 4 exists in the task_categories table
                 'due_date' => $now->addDays(5),
                 'status' => 'in_progress',
+                'created_by' => 1,
+                'updated_by' => 1,
                 'created_at' => $now,
                 'updated_at' => $now,
             ],
@@ -44,6 +48,8 @@ class TaskSeeder extends Seeder
                 'category_id' => 2, // Assuming category 2 exists in the task_categories table
                 'due_date' => $now->addWeeks(1),
                 'status' => 'pending',
+                'created_by' => 1,
+                'updated_by' => 1,
                 'created_at' => $now,
                 'updated_at' => $now,
             ],
@@ -54,6 +60,8 @@ class TaskSeeder extends Seeder
                 'category_id' => 3, // Assuming category 3 exists in the task_categories table
                 'due_date' => $now->addWeeks(2),
                 'status' => 'pending',
+                'created_by' => 1,
+                'updated_by' => 1,
                 'created_at' => $now,
                 'updated_at' => $now,
             ],

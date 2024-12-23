@@ -8,6 +8,7 @@ use App\Models\Task;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ResearchProjectController extends Controller
 {
@@ -16,7 +17,7 @@ class ResearchProjectController extends Controller
      */
     public function index()
     {
-        $researchProjects = ResearchProject::with('user', 'task')->latest()->get();
+        $researchProjects = ResearchProject::with('user', 'task', 'creator:id,name')->latest()->get();
         $statuses = ResearchProject::STATUS_ARR;
 
         return view('admin.research-projects.index', compact('researchProjects', 'statuses'));
@@ -55,7 +56,9 @@ class ResearchProjectController extends Controller
                 'task_id' => $request->task,
                 'title' => $request->title,
                 'description' => $request->description,
-                'status' => $request->status
+                'status' => $request->status,
+                'created_by' => Auth::id(),
+                'created_at' => now(),
             ]);
 
             notify()->success("Research project created successfully", "Success");
@@ -108,7 +111,9 @@ class ResearchProjectController extends Controller
                 'task_id' => $request->task,
                 'title' => $request->title,
                 'description' => $request->description,
-                'status' => $request->status
+                'status' => $request->status,
+                'updated_by' => Auth::id(),
+                'updated_at' => now(),
             ]);
 
             notify()->success("Research project updated successfully", "Success");

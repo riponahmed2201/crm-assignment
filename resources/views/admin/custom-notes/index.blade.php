@@ -21,6 +21,7 @@
                                     <th>Title</th>
                                     <th>Content</th>
                                     <th>Tags</th>
+                                    <th>Created By</th>
                                     <th>Created At</th>
                                     <th>Action</th>
                                 </tr>
@@ -33,14 +34,20 @@
                                         <td>{{ $customNote->title }}</td>
                                         <td>{{ $customNote->content }}</td>
                                         <td>{{ $customNote->tags }}</td>
+                                        <td>{{ $customNote?->creator?->name }}</td>
                                         <td>{{ $customNote->created_at->diffForHumans() }}</td>
                                         <td>
                                             <a href="{{ route('custom-notes.edit', $customNote->id) }}"
                                                 class="btn btn-sm btn-primary">
                                                 Edit</a>
-                                            <a href="{{ route('custom-notes.destroy', $customNote->id) }}"
-                                                class="btn btn-sm btn-danger">
-                                                Delete</a>
+
+                                            <form action="{{ route('custom-notes.destroy', $customNote->id) }}"
+                                                method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger"
+                                                    onclick="return confirm('Are you sure you want to delete this item?')">Delete</button>
+                                            </form>
                                         </td>
                                     </tr>
                                 @endforeach

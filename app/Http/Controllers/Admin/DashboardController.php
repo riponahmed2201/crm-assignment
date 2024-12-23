@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-    public function __invoke()
+    public function index()
     {
         $taskCount = Task::count();
         $academicRoleCount = AcademicRole::count();
@@ -18,5 +18,15 @@ class DashboardController extends Controller
         $researchProjectsCount = AcademicRole::count();
 
         return view('admin.dashboard', compact('taskCount', 'academicRoleCount', 'userCount', 'researchProjectsCount'));
+    }
+
+    public function studentDashboard()
+    {
+        $taskCount = Task::count();
+        $academicRoleCount = AcademicRole::count();
+        $userCount = User::count();
+        $researchProjectsCount = AcademicRole::count();
+
+        return view('student.dashboard', compact('taskCount', 'academicRoleCount', 'userCount', 'researchProjectsCount'));
     }
 }

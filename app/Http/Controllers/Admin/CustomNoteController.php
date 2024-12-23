@@ -7,6 +7,7 @@ use App\Models\CustomNote;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CustomNoteController extends Controller
 {
@@ -15,7 +16,7 @@ class CustomNoteController extends Controller
      */
     public function index()
     {
-        $customNotes = CustomNote::with('user')->latest()->get();
+        $customNotes = CustomNote::with('user', 'creator:id,name')->latest()->get();
 
         return view('admin.custom-notes.index', compact('customNotes'));
     }
@@ -48,7 +49,9 @@ class CustomNoteController extends Controller
                 'user_id' => $request->user_name,
                 'title' => $request->title,
                 'content' => $request->content,
-                'tags' => $request->tags
+                'tags' => $request->tags,
+                'created_by' => Auth::id(),
+                'created_at' => now(),
             ]);
 
             notify()->success("Custom note created successfully", "Success");
@@ -96,7 +99,9 @@ class CustomNoteController extends Controller
                 'user_id' => $request->user_name,
                 'title' => $request->title,
                 'content' => $request->content,
-                'tags' => $request->tags
+                'tags' => $request->tags,
+                'updated_by' => Auth::id(),
+                'updated_at' => now(),
             ]);
 
             notify()->success("Custom note updated successfully", "Success");

@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('title');
             $table->text('content');
             $table->text('tags');
+            $table->tinyInteger('created_by');
+            $table->tinyInteger('updated_by');
             $table->timestamps();
         });
     }

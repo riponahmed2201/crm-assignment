@@ -1,28 +1,46 @@
 <aside id="sidebar" class="sidebar">
     <ul class="sidebar-nav" id="sidebar-nav">
-        <li class="nav-item">
-            <a class="nav-link {{ Request::is('dashboard') ? '' : 'collapsed' }}" href="{{ route('dashboard') }}">
-                <i class="bi bi-grid"></i>
-                <span>Dashboard</span>
-            </a>
-        </li>
+
+        @if (Auth::user()->role === 'admin')
+            <li class="nav-item">
+                <a class="nav-link {{ Request::is('dashboard') ? '' : 'collapsed' }}" href="{{ route('dashboard') }}">
+                    <i class="bi bi-grid"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+        @endif
+
+        @if (Auth::user()->role === 'student')
+            <li class="nav-item">
+                <a class="nav-link {{ Request::is('student-dashboard') ? '' : 'collapsed' }}"
+                    href="{{ route('student.dashboard') }}">
+                    <i class="bi bi-grid"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+        @endif
 
         <li class="nav-heading">Academic Management</li>
 
-        <li class="nav-item">
-            <a class="nav-link {{ Request::is('academic-roles') ? '' : 'collapsed' }}"
-                href="{{ route('academic-roles.index') }}">
-                <i class="bi bi-layout-text-window-reverse"></i>
-                <span>Academic Roles</span>
-            </a>
-        </li>
+        @if (Auth::user()->role === 'admin')
+            <li class="nav-item">
+                <a class="nav-link {{ Request::is('academic-roles') ? '' : 'collapsed' }}"
+                    href="{{ route('academic-roles.index') }}">
+                    <i class="bi bi-layout-text-window-reverse"></i>
+                    <span>Academic Roles</span>
+                </a>
+            </li>
+        @endif
 
-        <li class="nav-item">
-            <a class="nav-link {{ Request::is('contacts') ? '' : 'collapsed' }}" href="{{ route('contacts.index') }}">
-                <i class="bi bi-card-list"></i>
-                <span>Contacts</span>
-            </a>
-        </li>
+        @if (Auth::user()->role === 'admin')
+            <li class="nav-item">
+                <a class="nav-link {{ Request::is('contacts') ? '' : 'collapsed' }}"
+                    href="{{ route('contacts.index') }}">
+                    <i class="bi bi-card-list"></i>
+                    <span>Contacts</span>
+                </a>
+            </li>
+        @endif
 
         <li class="nav-item">
             <a class="nav-link {{ Request::is('research-projects') ? '' : 'collapsed' }}"
@@ -40,13 +58,15 @@
             </a>
         </li>
 
-        <li class="nav-item">
-            <a class="nav-link {{ Request::is('documents') ? '' : 'collapsed' }}"
-                href="{{ route('documents.index') }}">
-                <i class="bi bi-layout-text-window-reverse"></i>
-                <span>Documents</span>
-            </a>
-        </li>
+        @if (Auth::user()->role === 'admin')
+            <li class="nav-item">
+                <a class="nav-link {{ Request::is('documents') ? '' : 'collapsed' }}"
+                    href="{{ route('documents.index') }}">
+                    <i class="bi bi-layout-text-window-reverse"></i>
+                    <span>Documents</span>
+                </a>
+            </li>
+        @endif
 
         <li class="nav-heading">Calender Event Management</li>
 
@@ -60,13 +80,15 @@
 
         <li class="nav-heading">Task Management</li>
 
-        <li class="nav-item">
-            <a class="nav-link {{ Request::is('task-categories') ? '' : 'collapsed' }}"
-                href="{{ route('task-categories.index') }}">
-                <i class="bi bi-gem"></i>
-                <span>Task Categories</span>
-            </a>
-        </li>
+        @if (Auth::user()->role === 'admin')
+            <li class="nav-item">
+                <a class="nav-link {{ Request::is('task-categories') ? '' : 'collapsed' }}"
+                    href="{{ route('task-categories.index') }}">
+                    <i class="bi bi-gem"></i>
+                    <span>Task Categories</span>
+                </a>
+            </li>
+        @endif
 
         <li class="nav-item">
             <a class="nav-link {{ Request::is('tasks') ? '' : 'collapsed' }}" href="{{ route('tasks.index') }}">
@@ -77,13 +99,15 @@
 
         <li class="nav-heading">Financial Management</li>
 
-        <li class="nav-item">
-            <a class="nav-link {{ Request::is('financial-categories') ? '' : 'collapsed' }}"
-                href="{{ route('financial-categories.index') }}">
-                <i class="bi bi-gem"></i>
-                <span>Financial Categories</span>
-            </a>
-        </li>
+        @if (Auth::user()->role === 'admin')
+            <li class="nav-item">
+                <a class="nav-link {{ Request::is('financial-categories') ? '' : 'collapsed' }}"
+                    href="{{ route('financial-categories.index') }}">
+                    <i class="bi bi-gem"></i>
+                    <span>Financial Categories</span>
+                </a>
+            </li>
+        @endif
 
         <li class="nav-item">
             <a class="nav-link {{ Request::is('financial-trackers') ? '' : 'collapsed' }}"
@@ -113,22 +137,26 @@
             </a>
         </li>
 
-        <li class="nav-heading">User Management</li>
+        @if (Auth::user()->role === 'admin')
+            <li class="nav-heading">User Management</li>
 
-        <li class="nav-item">
-            <a class="nav-link {{ Request::is('users') ? '' : 'collapsed' }}" href="{{ route('users.index') }}">
-                <i class="bi bi-person"></i>
-                <span>Users</span>
-            </a>
-        </li>
+            <li class="nav-item">
+                <a class="nav-link {{ Request::is('users') ? '' : 'collapsed' }}" href="{{ route('users.index') }}">
+                    <i class="bi bi-person"></i>
+                    <span>Users</span>
+                </a>
+            </li>
+        @endif
 
-        <li class="nav-heading">Profile</li>
+        @if (Auth::user()->role === 'admin')
+            <li class="nav-heading">Profile</li>
 
-        <li class="nav-item">
-            <a class="nav-link {{ Request::is('profile') ? '' : 'collapsed' }}" href="{{ route('profile') }}">
-                <i class="bi bi-person"></i>
-                <span>Profile</span>
-            </a>
-        </li>
+            <li class="nav-item">
+                <a class="nav-link {{ Request::is('profile') ? '' : 'collapsed' }}" href="{{ route('profile') }}">
+                    <i class="bi bi-person"></i>
+                    <span>Profile</span>
+                </a>
+            </li>
+        @endif
     </ul>
 </aside>

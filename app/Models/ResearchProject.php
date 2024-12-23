@@ -8,7 +8,7 @@ class ResearchProject extends Model
 {
     protected $table = 'research_projects';
     protected $primaryKey = 'id';
-    protected $fillable = ['user_id', 'task_id', 'title', 'description', 'status'];
+    protected $fillable = ['user_id', 'task_id', 'title', 'description', 'status', 'created_by', 'updated_by', 'created_at', 'updated_at'];
 
     // Static status constants
     const STATUS_PROPOSED = 'proposed';
@@ -41,5 +41,10 @@ class ResearchProject extends Model
     public function task()
     {
         return $this->belongsTo(Task::class, 'task_id', 'id');
+    }
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id');
     }
 }

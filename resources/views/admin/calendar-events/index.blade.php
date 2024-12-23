@@ -22,6 +22,7 @@
                                     <th>Title</th>
                                     <th>Event Date</th>
                                     <th>Reminder</th>
+                                    <th>Created By</th>
                                     <th>Created At</th>
                                     <th>Action</th>
                                 </tr>
@@ -41,14 +42,19 @@
                                                 <span class="badge bg-warning">No</span>
                                             @endif
                                         </td>
+                                        <td>{{ $calendarEvent?->creator?->name }}</td>
                                         <td>{{ $calendarEvent->created_at->diffForHumans() }}</td>
                                         <td>
                                             <a href="{{ route('calendar-events.edit', $calendarEvent->id) }}"
                                                 class="btn btn-sm btn-primary">
                                                 Edit</a>
-                                            <a href="{{ route('calendar-events.destroy', $calendarEvent->id) }}"
-                                                class="btn btn-sm btn-danger">
-                                                Delete</a>
+                                            <form action="{{ route('calendar-events.destroy', $calendarEvent->id) }}"
+                                                method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger"
+                                                    onclick="return confirm('Are you sure you want to delete this item?')">Delete</button>
+                                            </form>
                                         </td>
                                     </tr>
                                 @endforeach

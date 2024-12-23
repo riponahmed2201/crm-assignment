@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('role_name');
             $table->text('description');
+            $table->tinyInteger('created_by');
+            $table->tinyInteger('updated_by');
             $table->timestamps();
         });
     }

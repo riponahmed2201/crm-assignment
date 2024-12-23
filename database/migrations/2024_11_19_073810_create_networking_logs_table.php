@@ -18,6 +18,8 @@ return new class extends Migration
             $table->dateTime('meeting_date');
             $table->text('notes');
             $table->dateTime('follow_up_date');
+            $table->tinyInteger('created_by');
+            $table->tinyInteger('updated_by');
             $table->timestamps();
         });
     }

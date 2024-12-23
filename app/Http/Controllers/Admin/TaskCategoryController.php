@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\TaskCategory;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TaskCategoryController extends Controller
 {
@@ -14,7 +15,7 @@ class TaskCategoryController extends Controller
      */
     public function index()
     {
-        $taskCategories = TaskCategory::latest()->get();
+        $taskCategories = TaskCategory::with('creator:id,name')->latest()->get();
 
         return view('admin.task-categories.index', compact('taskCategories'));
     }
@@ -39,7 +40,12 @@ class TaskCategoryController extends Controller
 
         try {
 
-            TaskCategory::create($request->all());
+            TaskCategory::create([
+                'category_name' => $request->input('category_name'),
+                'description' => $request->input('description'),
+                'created_by' => Auth::id(),
+                'created_at' => now(),
+            ]);
 
             notify()->success("Task category created successfully", "Success");
 
@@ -78,7 +84,12 @@ class TaskCategoryController extends Controller
 
         try {
 
-            $taskCategory->update($request->all());
+            $taskCategory->update([
+                'category_name' => $request->input('category_name'),
+                'description' => $request->input('description'),
+                'updated_by' => Auth::id(),
+                'updated_at' => now(),
+            ]);
 
             notify()->success("Task category updated successfully", "Success");
 

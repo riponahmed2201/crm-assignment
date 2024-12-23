@@ -22,6 +22,7 @@
                                     <th>Meeting Date</th>
                                     <th>Follow Date</th>
                                     <th>notes</th>
+                                    <th>Created By</th>
                                     <th>Created At</th>
                                     <th>Action</th>
                                 </tr>
@@ -35,14 +36,19 @@
                                         <td>{{ $networkingLog->meeting_date }}</td>
                                         <td>{{ $networkingLog->follow_up_date }}</td>
                                         <td>{{ $networkingLog->notes }}</td>
+                                        <td>{{ $networkingLog?->creator?->name }}</td>
                                         <td>{{ $networkingLog->created_at->diffForHumans() }}</td>
                                         <td>
                                             <a href="{{ route('networking-logs.edit', $networkingLog->id) }}"
                                                 class="btn btn-sm btn-primary">
                                                 Edit</a>
-                                            <a href="{{ route('networking-logs.destroy', $networkingLog->id) }}"
-                                                class="btn btn-sm btn-danger">
-                                                Delete</a>
+                                            <form action="{{ route('networking-logs.destroy', $networkingLog->id) }}"
+                                                method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger"
+                                                    onclick="return confirm('Are you sure you want to delete this item?')">Delete</button>
+                                            </form>
                                         </td>
                                     </tr>
                                 @endforeach

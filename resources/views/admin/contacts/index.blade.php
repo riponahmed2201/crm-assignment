@@ -23,6 +23,7 @@
                                     <th>Organization</th>
                                     <th>Email</th>
                                     <th>Phone</th>
+                                    <th>Created By</th>
                                     <th>Created At</th>
                                     <th>Action</th>
                                 </tr>
@@ -37,12 +38,18 @@
                                         <td>{{ $contact->organization }}</td>
                                         <td>{{ $contact->email }}</td>
                                         <td>{{ $contact->phone }}</td>
+                                        <td>{{ $contact?->creator?->name }}</td>
                                         <td>{{ $contact->created_at->diffForHumans() }}</td>
                                         <td>
                                             <a href="{{ route('contacts.edit', $contact->id) }}"
                                                 class="btn btn-sm btn-primary"> Edit</a>
-                                            <a href="{{ route('contacts.destroy', $contact->id) }}"
-                                                class="btn btn-sm btn-danger"> Delete</a>
+                                            <form action="{{ route('contacts.destroy', $contact->id) }}"
+                                                method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger"
+                                                    onclick="return confirm('Are you sure you want to delete this item?')">Delete</button>
+                                            </form>
                                         </td>
                                     </tr>
                                 @endforeach

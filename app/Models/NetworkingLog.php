@@ -8,7 +8,7 @@ class NetworkingLog extends Model
 {
     protected $table = 'networking_logs';
     protected $primaryKey = 'id';
-    protected $fillable = ['user_id', 'contact_id', 'meeting_date', 'notes', 'follow_up_date'];
+    protected $fillable = ['user_id', 'contact_id', 'meeting_date', 'notes', 'follow_up_date', 'created_by', 'updated_by', 'created_at', 'updated_at'];
 
     /**
      * Define the relationship with the User model
@@ -26,5 +26,10 @@ class NetworkingLog extends Model
     public function contact()
     {
         return $this->belongsTo(Contact::class, 'contact_id', 'id');
+    }
+
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id');
     }
 }

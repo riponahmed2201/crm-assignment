@@ -22,6 +22,7 @@
                                     <th>Title</th>
                                     <th>Description</th>
                                     <th>status</th>
+                                    <th>Created By</th>
                                     <th>Created At</th>
                                     <th>Action</th>
                                 </tr>
@@ -51,14 +52,19 @@
                                                     class="badge bg-danger">{{ $statuses[$researchProject->status] }}</span>
                                             @endif
                                         </td>
+                                        <td>{{ $researchProject?->creator?->name }}</td>
                                         <td>{{ $researchProject->created_at->diffForHumans() }}</td>
                                         <td>
                                             <a href="{{ route('research-projects.edit', $researchProject->id) }}"
                                                 class="btn btn-sm btn-primary">
                                                 Edit</a>
-                                            <a href="{{ route('research-projects.destroy', $researchProject->id) }}"
-                                                class="btn btn-sm btn-danger">
-                                                Delete</a>
+                                            <form action="{{ route('research-projects.destroy', $researchProject->id) }}"
+                                                method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger"
+                                                    onclick="return confirm('Are you sure you want to delete this item?')">Delete</button>
+                                            </form>
                                         </td>
                                     </tr>
                                 @endforeach

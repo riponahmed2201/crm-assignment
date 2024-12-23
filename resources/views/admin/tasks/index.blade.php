@@ -22,6 +22,7 @@
                                     <th>Title</th>
                                     <th>Due Date</th>
                                     <th>Status</th>
+                                    <th>Created By</th>
                                     <th>Created At</th>
                                     <th>Action</th>
                                 </tr>
@@ -43,13 +44,18 @@
                                                 <span class="badge bg-success">{{ $statuses[$task->status] }}</span>
                                             @endif
                                         </td>
+                                        <td>{{ $task?->creator?->name }}</td>
                                         <td>{{ $task->created_at->diffForHumans() }}</td>
                                         <td>
                                             <a href="{{ route('tasks.edit', $task->id) }}" class="btn btn-sm btn-primary">
                                                 Edit</a>
-                                            <a href="{{ route('tasks.destroy', $task->id) }}"
-                                                class="btn btn-sm btn-danger">
-                                                Delete</a>
+                                            <form action="{{ route('tasks.destroy', $task->id) }}"
+                                                method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger"
+                                                    onclick="return confirm('Are you sure you want to delete this item?')">Delete</button>
+                                            </form>
                                         </td>
                                     </tr>
                                 @endforeach

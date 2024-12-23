@@ -8,6 +8,7 @@ use App\Models\FinancialTracker;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class FinancialTrackerController extends Controller
 {
@@ -16,7 +17,7 @@ class FinancialTrackerController extends Controller
      */
     public function index()
     {
-        $financialTrackers = FinancialTracker::with('user', 'category')->latest()->get();
+        $financialTrackers = FinancialTracker::with('user', 'category', 'creator:id,name')->latest()->get();
 
         $statuses = FinancialTracker::STATUS_ARR;
 
@@ -59,7 +60,9 @@ class FinancialTrackerController extends Controller
                 'amount' => $request->amount,
                 'due_date' => $request->due_date,
                 'status' => $request->status,
-                'description' => $request->description
+                'description' => $request->description,
+                'created_by' => Auth::id(),
+                'created_at' => now(),
             ]);
 
             notify()->success("Financial tracker created successfully", "Success");
@@ -108,14 +111,16 @@ class FinancialTrackerController extends Controller
 
         try {
 
-            $financialTracker->create([
+            $financialTracker->update([
                 'user_id' => $request->user_name,
                 'category_id' => $request->category,
                 'title' => $request->title,
                 'amount' => $request->amount,
                 'due_date' => $request->due_date,
                 'status' => $request->status,
-                'description' => $request->description
+                'description' => $request->description,
+                'updated_by' => Auth::id(),
+                'updated_at' => now(),
             ]);
 
             notify()->success("Financial tracker updated successfully", "Success");

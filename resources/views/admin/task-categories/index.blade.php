@@ -19,6 +19,7 @@
                                     <th>#</th>
                                     <th>Category Name</th>
                                     <th>Description</th>
+                                    <th>Created By</th>
                                     <th>Created At</th>
                                     <th>Action</th>
                                 </tr>
@@ -29,12 +30,18 @@
                                         <td>{{ $loop->iteration }}</td>
                                         <td>{{ $taskCategory->category_name }}</td>
                                         <td>{{ $taskCategory->description }}</td>
+                                        <td>{{ $taskCategory?->creator?->name }}</td>
                                         <td>{{ $taskCategory->created_at->diffForHumans() }}</td>
                                         <td>
                                             <a href="{{ route('task-categories.edit', $taskCategory->id) }}"
                                                 class="btn btn-sm btn-primary"> Edit</a>
-                                            <a href="{{ route('task-categories.destroy', $taskCategory->id) }}"
-                                                class="btn btn-sm btn-danger"> Delete</a>
+                                            <form action="{{ route('task-categories.destroy', $taskCategory->id) }}"
+                                                method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger"
+                                                    onclick="return confirm('Are you sure you want to delete this item?')">Delete</button>
+                                            </form>
                                         </td>
                                     </tr>
                                 @endforeach

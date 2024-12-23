@@ -17,12 +17,54 @@ class TaskCategorySeeder extends Seeder
         $now = Carbon::now();
 
         $categories = [
-            ['category_name' => 'Assignment', 'description' => 'Course-related tasks.', 'created_at' => $now, 'updated_at' => $now],
-            ['category_name' => 'Research', 'description' => 'Thesis or research-related tasks.', 'created_at' => $now, 'updated_at' => $now],
-            ['category_name' => 'Exam Preparation', 'description' => 'Tasks for studying for exams.', 'created_at' => $now, 'updated_at' => $now],
-            ['category_name' => 'Networking', 'description' => 'Building and maintaining professional connections.', 'created_at' => $now, 'updated_at' => $now],
-            ['category_name' => 'Administrative', 'description' => 'University paperwork, registrations, or payments.', 'created_at' => $now, 'updated_at' => $now],
-            ['category_name' => 'Personal Development', 'description' => 'Self-improvement or extracurricular tasks.', 'created_at' => $now, 'updated_at' => $now],
+            [
+                'category_name' => 'Assignment',
+                'description' => 'Course-related tasks.',
+                'created_by' => 1,
+                'updated_by' => 1,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],
+            [
+                'category_name' => 'Research',
+                'description' => 'Thesis or research-related tasks.',
+                'created_by' => 1,
+                'updated_by' => 1,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],
+            [
+                'category_name' => 'Exam Preparation',
+                'description' => 'Tasks for studying for exams.',
+                'created_by' => 1,
+                'updated_by' => 1,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],
+            [
+                'category_name' => 'Networking',
+                'description' => 'Building and maintaining professional connections.',
+                'created_by' => 1,
+                'updated_by' => 1,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],
+            [
+                'category_name' => 'Administrative',
+                'description' => 'University paperwork, registrations, or payments.',
+                'created_by' => 1,
+                'updated_by' => 1,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],
+            [
+                'category_name' => 'Personal Development',
+                'description' => 'Self-improvement or extracurricular tasks.',
+                'created_by' => 1,
+                'updated_by' => 1,
+                'created_at' => $now,
+                'updated_at' => $now
+            ],
         ];
 
         TaskCategory::insert($categories);

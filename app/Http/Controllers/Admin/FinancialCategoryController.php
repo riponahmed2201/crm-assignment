@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\FinancialCategory;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class FinancialCategoryController extends Controller
 {
@@ -14,7 +15,7 @@ class FinancialCategoryController extends Controller
      */
     public function index()
     {
-        $financialCategories = FinancialCategory::latest()->get();
+        $financialCategories = FinancialCategory::with('creator:id,name')->latest()->get();
 
         return view('admin.financial-categories.index', compact('financialCategories'));
     }
@@ -39,7 +40,12 @@ class FinancialCategoryController extends Controller
 
         try {
 
-            FinancialCategory::create($request->all());
+            FinancialCategory::create([
+                'category_name' => $request->input('category_name'),
+                'description' => $request->input('description'),
+                'created_by' => Auth::id(),
+                'created_at' => now(),
+            ]);
 
             notify()->success("Financial category created successfully", "Success");
 
@@ -78,7 +84,12 @@ class FinancialCategoryController extends Controller
 
         try {
 
-            $financialCategory->update($request->all());
+            $financialCategory->update([
+                'category_name' => $request->input('category_name'),
+                'description' => $request->input('description'),
+                'updated_by' => Auth::id(),
+                'updated_at' => now(),
+            ]);
 
             notify()->success("Financial category updated successfully", "Success");
 

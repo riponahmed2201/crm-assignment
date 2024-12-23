@@ -8,6 +8,7 @@ use App\Models\Task;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PerformanceController extends Controller
 {
@@ -16,7 +17,7 @@ class PerformanceController extends Controller
      */
     public function index()
     {
-        $performances = Performance::with('user', 'task')->latest()->get();
+        $performances = Performance::with('user', 'task', 'creator:id,name')->latest()->get();
 
         return view('admin.performances.index', compact('performances'));
     }
@@ -50,7 +51,9 @@ class PerformanceController extends Controller
                 'user_id' => $request->user_name,
                 'task_id' => $request->task,
                 'grade' => $request->grade,
-                'completion_percentage' => $request->completion_percentage
+                'completion_percentage' => $request->completion_percentage,
+                'created_by' => Auth::id(),
+                'created_at' => now(),
             ]);
 
             notify()->success("Performance created successfully", "Success");
@@ -99,7 +102,9 @@ class PerformanceController extends Controller
                 'user_id' => $request->user_name,
                 'task_id' => $request->task,
                 'grade' => $request->grade,
-                'completion_percentage' => $request->completion_percentage
+                'completion_percentage' => $request->completion_percentage,
+                'updated_by' => Auth::id(),
+                'updated_at' => now(),
             ]);
 
             notify()->success("Performance updated successfully", "Success");
