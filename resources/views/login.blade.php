@@ -40,7 +40,7 @@
                             <div class="d-flex justify-content-center py-4">
                                 <a href="/" class="logo d-flex align-items-center w-auto">
                                     <img src="{{ asset('assets/logo/University_of_South_Asia,_Bangladesh.jpg') }}" alt="">
-                                    <span class="d-none d-lg-block">Admin Login</span>
+                                    <span class="d-none d-lg-block">Login</span>
                                 </a>
                             </div><!-- End Logo -->
 
