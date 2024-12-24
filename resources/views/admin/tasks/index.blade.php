@@ -26,7 +26,7 @@
                                     <th>Title</th>
                                     <th>Due Date</th>
                                     <th>Status</th>
-                                    <th>Created By</th>
+                                    <th>Assign By</th>
                                     <th>Created At</th>
                                     @if (Auth::user()->role == 'admin')
                                         <th>Action</th>

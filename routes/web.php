@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\DocumentController;
 use App\Http\Controllers\Admin\FinancialCategoryController;
 use App\Http\Controllers\Admin\FinancialTrackerController;
 use App\Http\Controllers\Admin\MeetingLogController;
+use App\Http\Controllers\Admin\NoticeController;
 use App\Http\Controllers\Admin\PerformanceController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\ResearchProjectController;
@@ -58,5 +59,6 @@ Route::group(['middleware' => ['user']], function () {
         'performances' => PerformanceController::class,
         'research-projects' => ResearchProjectController::class,
         'tasks' => TaskController::class,
+        'notices' => NoticeController::class,
     ]);
 });

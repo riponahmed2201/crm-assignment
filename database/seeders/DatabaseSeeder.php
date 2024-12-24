@@ -26,7 +26,8 @@ class DatabaseSeeder extends Seeder
             MeetingLogSeeder::class,
             ResearchProjectSeeder::class,
             PerformanceSeeder::class,
-            CustomNoteSeeder::class
+            CustomNoteSeeder::class,
+            NoticeSeeder::class,
         ]);
     }
 }

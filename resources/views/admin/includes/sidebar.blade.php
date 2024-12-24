@@ -10,6 +10,15 @@
             </li>
         @endif
 
+        @if (Auth::user()->role === 'admin')
+            <li class="nav-item">
+                <a class="nav-link {{ Request::is('notices') ? '' : 'collapsed' }}" href="{{ route('notices.index') }}">
+                    <i class="bi bi-layout-text-window-reverse"></i>
+                    <span>Notice</span>
+                </a>
+            </li>
+        @endif
+
         @if (Auth::user()->role === 'student')
             <li class="nav-item">
                 <a class="nav-link {{ Request::is('student-dashboard') ? '' : 'collapsed' }}"
