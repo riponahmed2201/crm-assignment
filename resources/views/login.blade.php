@@ -5,13 +5,13 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Login - Assignment</title>
+    <title>Login - University of South Asia</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
     <!-- Favicons -->
-    <link href="assets/img/favicon.png" rel="icon">
-    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+    <link href="{{ asset('assets/logo/University_of_South_Asia,_Bangladesh.jpg') }}" rel="icon">
+    <link href="{{ asset('assets/logo/University_of_South_Asia,_Bangladesh.jpg') }}" rel="apple-touch-icon">
 
     <!-- Google Fonts -->
     <link href="https://fonts.gstatic.com" rel="preconnect">
@@ -39,8 +39,8 @@
 
                             <div class="d-flex justify-content-center py-4">
                                 <a href="/" class="logo d-flex align-items-center w-auto">
-                                    <img src="assets/img/logo.png" alt="">
-                                    <span class="d-none d-lg-block">CRM Admin</span>
+                                    <img src="{{ asset('assets/logo/University_of_South_Asia,_Bangladesh.jpg') }}" alt="">
+                                    <span class="d-none d-lg-block">Admin Login</span>
                                 </a>
                             </div><!-- End Logo -->
 
@@ -49,7 +49,7 @@
                                 <div class="card-body">
 
                                     <div class="pt-4 pb-2">
-                                        <h5 class="card-title text-center pb-0 fs-4">Login to Your Account</h5>
+                                        <h5 class="card-title text-center pb-0 fs-4">University of South Asia</h5>
                                         <p class="text-center small">Enter your email & password to login</p>
                                     </div>
 
@@ -94,7 +94,7 @@
                             </div>
 
                             <div class="credits">
-                                Designed by <a href="javascript:void(0)">Bootstrap</a>
+                                Designed by <a href="javascript:void(0)">University of South Asia</a>
                             </div>
 
                         </div>

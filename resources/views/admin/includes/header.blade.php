@@ -1,9 +1,9 @@
 <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-        <a href="index.html" class="logo d-flex align-items-center">
-            <img src="{{ asset('assets/img/logo.png') }}" alt="">
-            <span class="d-none d-lg-block">CRM Admin</span>
+        <a href="javascript:void(0)" class="logo d-flex align-items-center">
+            <img src="{{ asset('assets/logo/University_of_South_Asia,_Bangladesh.jpg') }}" alt="University of South Asia">
+            <span class="d-none d-lg-block" style="font-size: 20px">University of South Asia</span>
         </a>
         <i class="bi bi-list toggle-sidebar-btn"></i>
     </div>
