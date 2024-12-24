@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
             PerformanceSeeder::class,
             CustomNoteSeeder::class,
             NoticeSeeder::class,
+            StudentSeeder::class,
         ]);
     }
 }

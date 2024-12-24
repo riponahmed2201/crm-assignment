@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\NoticeController;
 use App\Http\Controllers\Admin\PerformanceController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\ResearchProjectController;
+use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\TaskCategoryController;
 use App\Http\Controllers\Admin\TaskController;
 use App\Http\Controllers\Admin\UserController;
@@ -33,7 +34,8 @@ Route::group(['middleware' => ['admin']], function () {
         'academic-roles' => AcademicRoleController::class,
         'contacts' => ContactController::class,
         'financial-categories' => FinancialCategoryController::class,
-        'task-categories' => TaskCategoryController::class
+        'task-categories' => TaskCategoryController::class,
+        'students' => StudentController::class
     ]);
 });
 
