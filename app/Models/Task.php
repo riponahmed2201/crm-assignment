@@ -8,7 +8,7 @@ class Task extends Model
 {
     protected $table = 'tasks';
     protected $primaryKey = 'id';
-    protected $fillable = ['user_id', 'category_id', 'title', 'description', 'due_date', 'status', 'created_by', 'updated_by', 'created_at', 'updated_at'];
+    protected $fillable = ['user_id', 'category_id', 'title', 'description', 'due_date', 'file', 'status', 'created_by', 'updated_by', 'created_at', 'updated_at'];
 
     // Static status constants
     const STATUS_PENDING = 'pending';

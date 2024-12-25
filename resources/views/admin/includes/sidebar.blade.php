@@ -21,7 +21,8 @@
 
         @if (Auth::user()->role === 'admin')
             <li class="nav-item">
-                <a class="nav-link {{ Request::is('notices') ? '' : 'collapsed' }}" href="{{ route('notices.index') }}">
+                <a class="nav-link {{ Request::is('students') ? '' : 'collapsed' }}"
+                    href="{{ route('students.index') }}">
                     <i class="bi bi-layout-text-window-reverse"></i>
                     <span>Student</span>
                 </a>

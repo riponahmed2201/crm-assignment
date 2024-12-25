@@ -88,6 +88,24 @@
                     <div class="col-md-6">
                         <div class="form-group mb-3">
                             <div class="form-group mb-3">
+                                <label for="file" class="form-label">Upload File </label>
+
+                                <input type="file" class="form-control" name="file">
+                                @if (isset($task) && $task->file)
+                                    <img src="{{ asset('storage/' . $task->file) }}" alt="Task File"
+                                        class="img-thumbnail mt-2" style="width: 100px;">
+                                @endif
+
+                                @error('file')
+                                    <span class="text-danger mt-2">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <div class="form-group mb-3">
                                 <label for="status" class="form-label">Status <span
                                         class="text-danger">*</span></label>
                                 <select id="status" class="form-select" name="status">

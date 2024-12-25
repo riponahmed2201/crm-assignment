@@ -11,7 +11,7 @@
                 <div class="card">
                     <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
-                        <img src="{{ asset('assets/img/profile-img.jpg') }}" alt="Profile" class="rounded-circle">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/59/User-avatar.svg" alt="Profile" class="rounded-circle">
                         <h2>{{ Auth::user()->name }}</h2>
                         <h3>{{ Auth::user()->email }}</h3>
                     </div>
@@ -34,11 +34,6 @@
                             <li class="nav-item">
                                 <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Edit
                                     Profile</button>
-                            </li>
-
-                            <li class="nav-item">
-                                <button class="nav-link" data-bs-toggle="tab"
-                                    data-bs-target="#profile-settings">Settings</button>
                             </li>
 
                             <li class="nav-item">

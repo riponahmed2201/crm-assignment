@@ -19,8 +19,11 @@ return new class extends Migration
             $table->string('department');
             $table->string('batch');
             $table->string('program');
+            $table->string('student_id');
+            $table->string('profile_picture');
             $table->date('date_of_birth')->nullable();
             $table->string('address')->nullable();
+            $table->enum('status', ['active', 'inactive'])->default('inactive');
             $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
             $table->foreignId('updated_by')->nullable()->constrained('users')->onDelete('set null');
             $table->timestamps();

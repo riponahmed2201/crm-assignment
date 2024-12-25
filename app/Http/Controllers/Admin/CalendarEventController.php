@@ -17,7 +17,13 @@ class CalendarEventController extends Controller
      */
     public function index()
     {
-        $calendarEvents = CalendarEvent::with('user:id,name', 'task:id,title', 'creator:id,name')->latest()->get();
+        $calendarEventQuery = CalendarEvent::with('user:id,name', 'task:id,title', 'creator:id,name')->latest();
+
+        if (Auth::user()->role === 'student') {
+            $calendarEventQuery->where('user_id', Auth::id());
+        }
+
+        $calendarEvents = $calendarEventQuery->get();
 
         return view('admin.calendar-events.index', compact('calendarEvents'));
     }

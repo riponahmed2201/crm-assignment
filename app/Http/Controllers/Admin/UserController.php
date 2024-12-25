@@ -107,8 +107,6 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        dd($user);
-
         try {
             if ($user->deletable) {
                 $user->delete();
@@ -119,7 +117,6 @@ class UserController extends Controller
                 return back();
             }
         } catch (Exception $exception) {
-            dd($exception);
             notify()->success("Something error found! Please try again", "Error");
             return back();
         }

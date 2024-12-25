@@ -18,6 +18,7 @@ return new class extends Migration
             $table->text('description');
             $table->unsignedInteger('category_id');
             $table->dateTime('due_date');
+            $table->string('file')->nullable();
             $table->enum('status', ['pending', 'in_progress', 'completed'])->default('pending');
             $table->tinyInteger('created_by')->nullable();
             $table->tinyInteger('updated_by')->nullable();

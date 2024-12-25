@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\AcademicRole;
 use App\Models\FinancialTracker;
 use App\Models\MeetingLog;
+use App\Models\Notice;
 use App\Models\ResearchProject;
 use App\Models\Task;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -31,6 +33,19 @@ class DashboardController extends Controller
         $financialTrackerCount = FinancialTracker::where('user_id', Auth::id())->count();
         $researchProjectsCount = ResearchProject::where('user_id', Auth::id())->count();
 
-        return view('student.dashboard', compact('taskCount', 'meetingLogCount', 'financialTrackerCount', 'researchProjectsCount'));
+        $notices = Notice::where('status', 'published')
+            ->where('published_at', '<=', Carbon::now())
+            ->where('expires_at', '>=', Carbon::now())
+            ->get();
+
+        $data = [
+            'taskCount' => $taskCount,
+            'meetingLogCount' => $meetingLogCount,
+            'financialTrackerCount' => $financialTrackerCount,
+            'researchProjectsCount' => $researchProjectsCount,
+            'notices' => $notices,
+        ];
+
+        return view('student.dashboard', $data);
     }
 }

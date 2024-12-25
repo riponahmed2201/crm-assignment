@@ -2,8 +2,8 @@
 
     <div class="d-flex align-items-center justify-content-between">
         <a href="javascript:void(0)" class="logo d-flex align-items-center">
-            <img src="{{ asset('assets/logo/University_of_South_Asia,_Bangladesh.jpg') }}" alt="University of South Asia">
-            <span class="d-none d-lg-block" style="font-size: 20px">University of South Asia</span>
+            <img src="{{ asset('assets/logo/University_of_South_Asia,_Bangladesh.jpg') }}" alt="Student Management System">
+            <span class="d-none d-lg-block" style="font-size: 17px">Student Management System</span>
         </a>
         <i class="bi bi-list toggle-sidebar-btn"></i>
     </div>
@@ -15,7 +15,7 @@
             <li class="nav-item dropdown pe-3">
 
                 <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-                    <img src="{{ asset('assets/img/profile-img.jpg') }}" alt="Profile" class="rounded-circle">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/59/User-avatar.svg" alt="Profile" class="rounded-circle">
                     <span class="d-none d-md-block dropdown-toggle ps-2">{{ Auth::user()->name }}</span>
                 </a>
                 <!-- End Profile Iamge Icon -->
